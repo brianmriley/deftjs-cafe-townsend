@@ -1,4 +1,13 @@
-// Set up the Loader and specify the path to the application files.
+/**
+ * The main application class sets up the following:
+ *
+ * <ul>
+ * <li>Sets up loaders and class loader dependencies</li>
+ * <li>Sencha MVC infrastructure (listing out the models, views, and controllers)</li>
+ * <li>DeftJS IoC and dependencies</li>
+ * <li>dds the views to the main Viewport when the application launches</li>
+ * </ul>
+ */
 Ext.Loader.setConfig({
     enabled: true,
     disableCaching:true,
@@ -8,7 +17,6 @@ Ext.Loader.setConfig({
 });
 
 Ext.syncRequire([
-
     // DEftJS core classes
     "Deft.core.Class",
     "Deft.mixin.Controllable",
@@ -28,11 +36,17 @@ Ext.onReady(function () {
     // Configure the DeftJS IoC container
     Deft.Injector.configure({
 
+        ////////////////////////////////////////////
+        // IMPL
+        ////////////////////////////////////////////
 //        authenticationService: "CafeTownsend.service.AuthenticationService",
 
-        authenticationService: "CafeTownsend.service.mock.AuthenticationServiceMock",
-        employeeService: "CafeTownsend.service.mock.EmployeeServiceMock",
-        employeeStore: "CafeTownsend.store.EmployeeStore"
+        ////////////////////////////////////////////
+        // MOCKS
+        ////////////////////////////////////////////
+        authenticationService:  "CafeTownsend.service.mock.AuthenticationServiceMock",
+        employeeService:        "CafeTownsend.service.mock.EmployeeServiceMock",
+        employeeStore:          "CafeTownsend.store.EmployeeStore"
     });
 });
 
@@ -40,10 +54,16 @@ Ext.application({
 
     name: "CafeTownsend",
 
+    ////////////////////////////////////////////
+    // MODELS
+    ////////////////////////////////////////////
     models: [
         "EmployeeModel"
     ],
 
+    ////////////////////////////////////////////
+    // VIEWS
+    ////////////////////////////////////////////
     views: [
         "LoginView",
         "EmployeeListView",
@@ -53,22 +73,22 @@ Ext.application({
     // list all of the controllers and view mediators for the application
     controllers:[
 
-        //////////////////////////////////
+        ////////////////////////////////////////////
         // CONTROLLERS
-        //////////////////////////////////
-        "LoginController",
+        ////////////////////////////////////////////
+        "AuthenticationController",
         "LogoutController",
         "EmployeeController",
 
-        //////////////////////////////////
+        ////////////////////////////////////////////
         // MEDIATORS
-        //////////////////////////////////
+        ////////////////////////////////////////////
         "mediator.LoginMediator",
         "mediator.EmployeeListMediator"
     ],
 
     /**
-     * Add the views to the stage. Not optional since we don't need them all upfront, but it'll get the
+     * Add the views to the stage. Not optimal since we don't need them all upfront, but it'll get the
      * ball rolling in the right direction for a PoC.
      */
     launch: function () {

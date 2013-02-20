@@ -35,7 +35,7 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
                 items: [
                     {
                         xtype: "button",
-                        itemId: "logOffButton",
+                        itemId: "logoutButton",
                         text: "Log Off",
                         align: "left"
                     },
@@ -56,20 +56,20 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
 //                onItemDisclosure: true,
 //                itemTpl: "<div class="contact">{firstName} <strong>{lastName}</strong></div>"
 //            }
-        ],
-
-        listeners: [
-            {
-                delegate: "#newEmployeeButton",
-                event: "tap",
-                fn: "onNewEmployeeButtonTap"
-            },
-            {
-                delegate: "#logOffButton",
-                event: "tap",
-                fn: "onLogOffButtonTap"
-            }
         ]
+
+//        listeners: [
+//            {
+//                delegate: "#newEmployeeButton",
+//                event: "tap",
+//                fn: "onNewEmployeeButtonTap"
+//            },
+//            {
+//                delegate: "#logoutButton",
+//                event: "tap",
+//                fn: "onLogOffButtonTap"
+//            }
+//        ]
     },
 
     /**
@@ -94,25 +94,25 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
         this.add([
             this.getList()
         ]);
-    },
+    }
 
     ////////////////////////////////////////////////
     // EVENT HANDLERS
     ////////////////////////////////////////////////
 
-    onNewEmployeeButtonTap: function() {
-        console.log("EmployeeListView.onNewEmployeeButtonTap");
-        this.fireEvent("newEmployeeEvent");
-    },
-
-    onLogOffButtonTap: function() {
-        console.log("EmployeeListView.onLogOffButtonTap");
-        this.fireEvent("logoutEvent");
-    },
-
-    onNotesListDisclose: function (list, record, target, index, evt, options) {
-        console.log("EmployeeListView.onNotesListDisclose");
-        this.fireEvent("showEmployeeDetailEvent", this, record);
-    }
+//    onNewEmployeeButtonTap: function() {
+//        console.log("EmployeeListView.onNewEmployeeButtonTap");
+//        this.fireEvent("newEmployeeEvent");
+//    },
+//
+//    onLogOffButtonTap: function() {
+//        console.log("EmployeeListView.onLogOffButtonTap");
+//        this.fireEvent("logoutEvent");
+//    },
+//
+//    onNotesListDisclose: function (list, record, target, index, evt, options) {
+//        console.log("EmployeeListView.onNotesListDisclose");
+//        this.fireEvent("showEmployeeDetailEvent", this, record);
+//    }
 
 });

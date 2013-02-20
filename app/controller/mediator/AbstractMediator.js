@@ -32,6 +32,10 @@ Ext.define("CafeTownsend.controller.mediator.AbstractMediator", {
     config: {
     },
 
+    getComponentById: function(id, view) {
+        return view.down("#" + id);
+    },
+
     /**
      * Provides a simple slide left animation for our views.
      *

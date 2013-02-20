@@ -6,18 +6,13 @@
  * The abstract controller is also the base class for all view mediators; we're really relying on Sencha Touch's
  * MVC design where a controller knows how to interact with a given view, so the base, abstract mediator extends
  * this abstract controller.
+ *
+ * TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
+ * 1)  Error: Error while resolving value to inject: no dependency provider found for "function() { return this.constructor.apply(this, arguments); }".
+ * 2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
  */
 Ext.define("CafeTownsend.controller.AbstractController", {
     extend: "Ext.app.Controller",
-
-    /*
-     TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
-    1)  Error: Error while resolving value to inject: no dependency provider found for "function() {
-        return this.constructor.apply(this, arguments);
-        }".
-    2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
-     */
-//    extend: "Deft.mvc.ViewController",
 
     config: {
         sessionToken: null
@@ -31,13 +26,11 @@ Ext.define("CafeTownsend.controller.AbstractController", {
 
         // TODO: BMR: 01/15/13: these bomb because this.getApplication() == null. why???
         try {
-//            this.addGlobalEventListener = this.getApplication().on;
-//            this.dispatchGlobalEvent = this.getApplication().fireEvent;
             this.setupGlobalEventListeners();
         } catch(err) {
             console.log("[ERROR] AbstractController.init: " +
                 "\n\t " +
-                "Can't get access the application property in the Controller because its undefined. " +
+                "Can't get access to the application property in the Controller because its undefined. " +
                 "\n\t " +
                 "If a concrete controller class extends this, why is this.getApplication() undefined in " +
                 "AbstractController.init() ???");
@@ -54,7 +47,7 @@ Ext.define("CafeTownsend.controller.AbstractController", {
      * @return {Boolean} Returns `false` if any of the handlers return `false`, otherwise it returns `true`.
      */
     dispatchGlobalEvent: function(eventName, args) {
-        console.log("AbstractController.dispatchGlobalEvent");
+        console.log("AbstractController.dispatchGlobalEvent: " + eventName);
 
         return this.getApplication().fireEvent(eventName, args);
     },
@@ -76,10 +69,12 @@ Ext.define("CafeTownsend.controller.AbstractController", {
      *
      * TODO: BMR: 01/15/13: make passing in the scope and arguments easier?
      */
-    addGlobalEventListener: function(eventName) {
+    addGlobalEventListener: function(type, handler, scope) {
         console.log("AbstractController.addGlobalEventListener");
 
-        this.addGlobalEventListener = this.getApplication().on(eventName);
+        this.getApplication().addListener(type, handler, scope);
+//        this.addGlobalEventListener =  this.getApplication().addListener(type, handler, scope);
+//        this.addGlobalEventListener = this.getApplication().on(eventName);
     },
 
     /**

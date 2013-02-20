@@ -2,7 +2,7 @@
  * The mock authentication service object.
  */
 Ext.define("CafeTownsend.service.mock.AuthenticationServiceMock", {
-    extend: "CafeTownsend.service.AbstractServiceMock",
+    extend: "CafeTownsend.service.mock.AbstractServiceMock",
 
     config: {
     },
@@ -19,7 +19,13 @@ Ext.define("CafeTownsend.service.mock.AuthenticationServiceMock", {
 
         var me = this;
 
-        if( (password == "deftjs") || (password == "password") || (password == "qwerty") ) {
+        if(
+            (password == "a") ||
+            (password == "deftjs") ||
+            (password == "password") ||
+            (password == "qwerty")
+            ) {
+
             var response = {
                 success: true,
                 sessionToken: "qwerty1234567890",

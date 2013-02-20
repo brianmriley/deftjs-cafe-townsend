@@ -3,19 +3,16 @@
  * and failed employee service calls.
  *
  * TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
+ * 1)  Error: Error while resolving value to inject: no dependency provider found for "function() { return this.constructor.apply(this, arguments); }".
+ * 2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
  */
 Ext.define("CafeTownsend.controller.EmployeeController", {
     extend: "CafeTownsend.controller.AbstractController",
-//    extend: "Ext.app.Controller",
 
-    /*
-     TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
-    1)  Error: Error while resolving value to inject: no dependency provider found for "function() {
-        return this.constructor.apply(this, arguments);
-        }".
-    2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
-     */
-//    extend: "Deft.mvc.ViewController",
+    requires: [
+        "CafeTownsend.event.EmployeeEvent",
+        "CafeTownsend.service.rpc.Responder"
+    ],
 
     inject: [
         "employeeService",
@@ -39,10 +36,7 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         this.callParent();
         console.log("EmployeeController.setupGlobalEventListeners");
 
-        this.addGlobalEventListener({
-            scope: this,
-            getEmployeeListEvent: "getEmployeeListCommand"
-        });
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST, this.onGetEmployeeList, this);
     },
 
     /**
@@ -53,17 +47,16 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     getEmployeeListCommand: function() {
         console.log("EmployeeController.getEmployeeListCommand");
 
-        var me = this;
-
+        var responder = new CafeTownsend.service.rpc.Responder(this.getEmployeeListSuccess, this.getEmployeeListFailure, this);
         var service = this.getEmployeeService();
-        service.setResponder({
-            success: me.getEmployeeListSuccess,
-            failure: me.getEmployeeListFailure,
-            scope: me
-        });
 
+        service.setResponder(responder);
         service.getEmployeeList();
     },
+
+    ////////////////////////////////////////////////
+    // SERVICE SUCCESS/FAULT HANDLERS
+    ////////////////////////////////////////////////
 
     /**
      * Handles the successful service call and takes the response data packet as a parameter.
@@ -75,18 +68,13 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
      * @param response  The response data packet from the successful service call.
      */
     getEmployeeListSuccess: function(response) {
+        console.log("EmployeeController.getEmployeeListSuccess");
 
-        if (response.success === true) {
-            console.log("EmployeeController.getEmployeeListSuccess");
+        var store = this.getEmployeeStore();
+        store.setData(response.employeeList);
 
-            var store = this.getEmployeeStore();
-            store.setData(response.employeeList);
-
-            this.dispatchGlobalEvent("getEmployeeListSuccessEvent");
-
-        } else {
-            this.getEmployeeListFailure(response.message);
-        }
+        var evt = new CafeTownsend.event.EmployeeEvent();
+        this.dispatchGlobalEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_SUCCESS, evt);
     },
 
     /**
@@ -101,7 +89,24 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     getEmployeeListFailure: function(response) {
         console.log("EmployeeController.getEmployeeListFailure");
 
-        this.dispatchGlobalEvent("getEmployeeListFaultEvent");
+        var evt = new CafeTownsend.event.EmployeeEvent();
+        this.dispatchGlobalEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_FAILURE, evt);
+    },
+
+    ////////////////////////////////////////////////
+    // EVENT BUS HANDLERS
+    ////////////////////////////////////////////////
+
+    /**
+     * Handles the login event on the application-level event bus. Grabs the username and password
+     * and calls a functional method that's more testable than this event handler.
+     *
+     * @param event Reference to the login event. Contains the username and password.
+     */
+    onGetEmployeeList: function(event) {
+        console.log("EmployeeController.onGetEmployeeList");
+
+        this.getEmployeeListCommand();
     }
 
 });

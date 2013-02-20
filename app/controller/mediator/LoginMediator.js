@@ -1,9 +1,17 @@
 /**
  * The login mediator essentially fulfills the passive view pattern for the login view.
+ *
+ * It is expected that different form factors may require a new mediator implementation as the events could be
+ * different; eg, a login button on a desktop app could be click whereas mobile could be tap.
  */
 Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
     extend: "CafeTownsend.controller.mediator.AbstractMediator",
     //    extend: "Ext.app.Controller",
+
+    requires: [
+        "CafeTownsend.view.LoginView",
+        "CafeTownsend.event.AuthenticationEvent"
+    ],
 
     /*
      TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
@@ -18,16 +26,23 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
 
         // create references to this mediator's views so we can listen to events and grab data from them
         refs: {
-            loginView: "loginview"
+            loginView:              "loginview",
+            logInButton:            "loginview #logInButton",
+            usernameTextField:      "loginview #usernameTextField",
+            passwordTextField:      "loginview #passwordTextField"
         },
 
         // set up view event to mediator mapping
         control: {
-            loginView: {
-                loginEvent: "onLogin"
+            logInButton: {
+                tap: "onLoginButtonTap"
             }
         }
     },
+
+    ////////////////////////////////////////////////
+    // FUNCTIONAL METHODS
+    ////////////////////////////////////////////////
 
     /**
      * Initializes the view mediator and sets up global event bus handlers.
@@ -35,11 +50,6 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
     init: function() {
         this.callParent();
         console.log("LoginMediator.init");
-
-//        this.getApplication().on({
-//            scope: this,
-//            authenticateSuccessEvent: "onLoginSuccess"
-//        });
     },
 
     /**
@@ -49,20 +59,51 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
         this.callParent();
         console.log("LoginMediator.setupGlobalEventListeners");
 
-        this.getApplication().on({
-            scope: this,
-            authenticateSuccessEvent: "onLoginSuccess"
+        this.addGlobalEventListener(CafeTownsend.event.AuthenticationEvent.LOGIN_SUCCESS, this.onLoginSuccess, this);
+        this.addGlobalEventListener(CafeTownsend.event.AuthenticationEvent.LOGIN_FAILURE, this.onLoginFailure, this);
+        this.addGlobalEventListener(CafeTownsend.event.AuthenticationEvent.LOGOUT_SUCCESS, this.onLogoutSuccess, this);
+    },
+
+    /**
+     *
+     * @param username
+     * @param password
+     */
+    login: function(username, password) {
+        console.log("LoginMediator.login: username = " + username + ", password = " + password);
+
+        var view = this.getLoginView();
+
+        this.reset();
+
+        view.setMasked({
+            xtype: "loadmask",
+            message: "Signing In..."
         });
 
-        this.getApplication().on({
-            scope: this,
-            authenticateFaultEvent: "onLoginFailure"
-        });
+        var evt = new CafeTownsend.event.AuthenticationEvent(username, password);
+        this.dispatchGlobalEvent(CafeTownsend.event.AuthenticationEvent.LOGIN, evt);
+    },
 
-        this.addGlobalEventListener({
-            scope: this,
-            logoutSuccessEvent: "onLogoutSuccess"
-        });
+    /**
+     * Sets the
+     * @param message
+     */
+    showSignInFailedMessage: function(message) {
+        console.log("LoginMediator.showSignInFailedMessage: " + message);
+
+        var label = this.getComponentById("signInFailedLabel", this.getLoginView());
+        label.setHtml(message);
+        label.show();
+    },
+
+    areLoginCredentialsValid: function(username, password) {
+        return (username.length !== 0 && password.length !== 0);
+    },
+
+    reset: function() {
+        this.getUsernameTextField().setValue("");
+        this.getPasswordTextField().setValue("");
     },
 
     ////////////////////////////////////////////////
@@ -75,6 +116,21 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
      */
     onLoginSuccess: function () {
         console.log("LoginMediator.onLoginSuccess");
+
+        var view = this.getLoginView();
+        view.setMasked(false);
+    },
+
+    /**
+     * Handles the logout success event from the logout controller. Slide the login view
+     * onto stage.
+     */
+    onLogoutSuccess: function () {
+        console.log("LoginMediator.onLoginSuccess");
+
+        var view = this.getLoginView();
+        view.setMasked(false);
+        Ext.Viewport.animateActiveItem(view, this.getSlideRightTransition());
     },
 
     /**
@@ -85,19 +141,7 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
 
         var view = this.getLoginView();
         view.setMasked(false);
-        view.showSignInFailedMessage("Login failed. Incorrect username or password.");
-    },
-
-    /**
-     * Handles the logout success event from the logout controller. Slide the login view
-     * onto stage.
-     */
-    onLogoutSuccess: function () {
-        console.log("EmployeeListMediator.onLoginSuccess");
-
-        var view = this.getLoginView();
-        view.setMasked(false);
-        Ext.Viewport.animateActiveItem(view, this.getSlideRightTransition());
+        this.showSignInFailedMessage("Login failed. Incorrect username or password.");
     },
 
     ////////////////////////////////////////////////
@@ -106,36 +150,34 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
 
     /**
      * Handles the simple login event from the login view. Grabs the username and password
-     * and dispatches them to the LoginController.
+     * and dispatches them to the AuthenticationController.
      *
-     * TODO: BMR: 01/16/13 Might consider using the view's API to get the username and password.
-     *
-     * @param view          Reference to the view that triggered this command.
-     * @param username      The username being passed to authenticate the user.
-     * @param password      The password being passed to authenticate the user.
+     * @param event The tao event from the login button on the login view.
      */
-    onLogin: function(view, username, password) {
-        console.log("LoginMediator.onLogin: username = " + username + ", password = " + password);
+    onLoginButtonTap: function(event) {
+        console.log("LoginMediator.onLoginButtonTap");
 
-        var view = this.getLoginView();
-        var model = Ext.create("CafeTownsend.model.UserModel");
+        var username = this.getUsernameTextField().getValue();
+        var password = this.getPasswordTextField().getValue();
+        var label = this.getComponentById("signInFailedLabel", this.getLoginView());
+        var me = this;
 
-        if (username.length === 0 || password.length === 0) {
+        label.hide();
 
-            view.showSignInFailedMessage("Please enter your username and password.");
-            return;
-        }
+        // Using a delayed task in order to give the hide animation above
+        // time to finish before executing the next steps.
+        var task = Ext.create("Ext.util.DelayedTask", function() {
 
-        view.setMasked({
-            xtype: "loadmask",
-            message: "Signing In..."
+            label.setHtml("");
+
+            if(me.areLoginCredentialsValid(username, password)) {
+                me.login(username, password);
+            } else {
+                me.showSignInFailedMessage("Please enter your username and password.")
+            }
         });
 
-        model.set('username', username);
-        model.set('password', password);
-
-        // broadcast an event to perform authentication
-        this.dispatchGlobalEvent("authenticateEvent", model);
+        task.delay(250);
     }
 
 });

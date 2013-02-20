@@ -3,35 +3,29 @@
  */
 Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
     extend: "CafeTownsend.controller.mediator.AbstractMediator",
-    //    extend: "Ext.app.Controller",
 
-    /*
-     TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
-    1)  Error: Error while resolving value to inject: no dependency provider found for "function() {
-        return this.constructor.apply(this, arguments);
-        }".
-    2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
-     */
-//    extend: "Deft.mvc.ViewController",
-
-    inject: [
-        "employeeService"
+    requires: [
+        "CafeTownsend.event.EmployeeEvent"
     ],
 
     config: {
 
         // create references to this mediator's views so we can listen to events and grab data from them
         refs: {
-            employeeListView: "employeelistview",
+            employeeListView:   "employeelistview",
+            logoutButton:       "employeelistview #logoutButton",
             employeeDetailView: "employeedetailview"
         },
 
         // set up view event to mediator mapping
         control: {
             employeeListView: {
-                logoutEvent: "onLogout",
-                newEmployeeEvent: "onNewEmployee",
-                showEmployeeDetailEvent: "onShowEmployeeDetail"
+                newEmployeeEvent:           "onNewEmployee",
+                showEmployeeDetailEvent:    "onShowEmployeeDetail"
+            },
+
+            logoutButton: {
+                tap: "onLogoutButtonTap"
             }
         }
     },
@@ -51,15 +45,25 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
         this.callParent();
         console.log("EmployeeListMediator.setupGlobalEventListeners");
 
-        this.addGlobalEventListener({
-            scope: this,
-            authenticateSuccessEvent: "onLoginSuccess"
+        this.addGlobalEventListener(CafeTownsend.event.AuthenticationEvent.LOGIN_SUCCESS, this.onLoginSuccess, this);
+
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_SUCCESS, this.onGetEmployeeListSuccess, this);
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_FAILURE, this.onGetEmployeeListFailure, this);
+    },
+
+    /**
+     * Dispatches the application event to get the list of employees.
+     */
+    getEmployeeList: function() {
+        console.log("EmployeeListMediator.getEmployeeList");
+
+        this.getEmployeeListView().setMasked({
+            xtype: "loadmask",
+            message: "Loadng Employees..."
         });
 
-//        this.addGlobalEventListener({
-//            scope: this,
-//            getEmployeeListSuccessEvent: "onGetEmployeeListSuccess"
-//        });
+        var evt = new CafeTownsend.event.EmployeeEvent();
+        this.dispatchGlobalEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST, evt);
     },
 
     ////////////////////////////////////////////////
@@ -73,16 +77,8 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
     onLoginSuccess: function () {
         console.log("EmployeeListMediator.onLoginSuccess");
 
-//        this.getEmployeeListView().setMasked({
-//            xtype: "loadmask",
-//            message: "Loadng Employees..."
-//        });
-
-        // broadcast an event to get the list of employees
-        this.dispatchGlobalEvent("getEmployeeListEvent");
-
-        var employeeListView = this.getEmployeeListView();
-        Ext.Viewport.animateActiveItem(employeeListView, this.getSlideLeftTransition());
+        Ext.Viewport.animateActiveItem(this.getEmployeeListView(), this.getSlideLeftTransition());
+        this.getEmployeeList();
     },
 
     /**
@@ -90,6 +86,15 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
      */
     onGetEmployeeListSuccess: function () {
         console.log("EmployeeListMediator.onGetEmployeeListSuccess");
+
+        this.getEmployeeListView().setMasked(false);
+    },
+
+    /**
+     * Handles the get employees failure event from the login controller.
+     */
+    onGetEmployeeListFailure: function () {
+        console.log("EmployeeListMediator.onGetEmployeeListFailure");
 
         this.getEmployeeListView().setMasked(false);
     },
@@ -103,10 +108,10 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
      * from the selected item in the list and set it as the data provider for the detail view.
      * Finally, slide the detial view onto stage.
      */
-    onLogout: function() {
-        console.log("EmployeeListMediator.onLogout");
+    onLogoutButtonTap: function() {
+        console.log("EmployeeListMediator.onLogoutButtonTap");
 
-        this.dispatchGlobalEvent("logoutEvent");
+        this.dispatchGlobalEvent(CafeTownsend.event.AuthenticationEvent.LOGOUT);
     },
 
     /**
