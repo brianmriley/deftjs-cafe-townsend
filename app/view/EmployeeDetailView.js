@@ -10,9 +10,11 @@ Ext.define("CafeTownsend.view.EmployeeDetailView", {
     ],
 
     alias: "widget.employeedetailview",
+
     config:{
         scrollable:'vertical'
     },
+
     initialize: function () {
 
         this.callParent(arguments);

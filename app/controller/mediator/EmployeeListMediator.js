@@ -8,24 +8,35 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
         "CafeTownsend.event.EmployeeEvent"
     ],
 
+    inject: [
+        "employeeStore"
+    ],
+
     config: {
+
+        // create a public property so we can inject our store
+        employeeStore: null,
 
         // create references to this mediator's views so we can listen to events and grab data from them
         refs: {
             employeeListView:   "employeelistview",
             logoutButton:       "employeelistview #logoutButton",
+            list:               "employeelistview #list",
             employeeDetailView: "employeedetailview"
         },
 
         // set up view event to mediator mapping
         control: {
             employeeListView: {
-                newEmployeeEvent:           "onNewEmployee",
-                showEmployeeDetailEvent:    "onShowEmployeeDetail"
+                newEmployeeEvent:           "onNewEmployee"
             },
 
             logoutButton: {
                 tap: "onLogoutButtonTap"
+            },
+
+            list: {
+                disclose: "onListDisclose"
             }
         }
     },
@@ -54,8 +65,8 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
     /**
      * Dispatches the application event to get the list of employees.
      */
-    getEmployeeList: function() {
-        console.log("EmployeeListMediator.getEmployeeList");
+    getEmployeeListData: function() {
+        console.log("EmployeeListMediator.getEmployeeListData");
 
         this.getEmployeeListView().setMasked({
             xtype: "loadmask",
@@ -64,6 +75,22 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
 
         var evt = new CafeTownsend.event.EmployeeEvent();
         this.dispatchGlobalEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST, evt);
+    },
+
+    /**
+     * Handles the show employee detail event from the employee list view. Grab the data model
+     * from the selected item in the list and set it as the data provider for the detail view.
+     * Finally, slide the detail view onto stage.
+     *
+     * @param record    The record is the data model for the item in the list currently selected.
+     */
+    showEmployeeDetail: function(record) {
+        console.log("EmployeeListMediator.showEmployeeDetail");
+
+        var employeeDetailView = this.getEmployeeDetailView();
+
+        employeeDetailView.setRecord(record);
+        Ext.Viewport.animateActiveItem(employeeDetailView, this.getSlideLeftTransition());
     },
 
     ////////////////////////////////////////////////
@@ -78,7 +105,7 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
         console.log("EmployeeListMediator.onLoginSuccess");
 
         Ext.Viewport.animateActiveItem(this.getEmployeeListView(), this.getSlideLeftTransition());
-        this.getEmployeeList();
+        this.getEmployeeListData();
     },
 
     /**
@@ -88,6 +115,7 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
         console.log("EmployeeListMediator.onGetEmployeeListSuccess");
 
         this.getEmployeeListView().setMasked(false);
+        this.getList().setStore(this.getEmployeeStore());
     },
 
     /**
@@ -104,9 +132,7 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
     ////////////////////////////////////////////////
 
     /**
-     * Handles the show employee detail event from the employee list view. Grab the data model
-     * from the selected item in the list and set it as the data provider for the detail view.
-     * Finally, slide the detial view onto stage.
+     * TODO
      */
     onLogoutButtonTap: function() {
         console.log("EmployeeListMediator.onLogoutButtonTap");
@@ -115,20 +141,20 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
     },
 
     /**
-     * Handles the show employee detail event from the employee list view. Grab the data model
-     * from the selected item in the list and set it as the data provider for the detail view.
-     * Finally, slide the detial view onto stage.
+     * TODO:
      *
-     * @param view      Reference to the object that fired the event.
-     * @param record    The record is the data model for the item in the list currently selected.
+     * @param list
+     * @param record
+     * @param target
+     * @param index
+     * @param evt
+     * @param options
      */
-    onShowEmployeeDetail: function(view, record) {
-        console.log("EmployeeListMediator.onShowEmployeeDetail");
+    onListDisclose: function (list, record, target, index, evt, options) {
+        console.log("EmployeeListMediator.onListDisclose");
 
-        var employeeDetailView = this.getEmployeeDetailView();
-        employeeDetailView.setRecord(record);
-        Ext.Viewport.animateActiveItem(employeeDetailView, this.getSlideLeftTransition());
-    },
+        this.showEmployeeDetail(record);
+    }
 
 });
 

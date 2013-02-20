@@ -36,6 +36,32 @@ Ext.define("CafeTownsend.controller.mediator.AbstractMediator", {
         return view.down("#" + id);
     },
 
+//    /**
+//     * Provides a simple helper method to show masks on the view.
+//     *
+//     * @param arg
+//     * @param message
+//     * @param view
+//     */
+//    setMasked: function(arg, message, view) {
+//        if(message === null) {
+//            message = "Loadng...";
+//        }
+//
+//        if(arg !== false) {
+//            arg = {
+//                xtype: "loadmask",
+//                message: message
+//            };
+//        }
+//
+//        if(view === null) {
+//            view = Ext.Viewport;
+//        }
+//
+//        view.setMasked(arg);
+//    },
+
     /**
      * Provides a simple slide left animation for our views.
      *

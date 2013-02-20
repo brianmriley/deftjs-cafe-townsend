@@ -1,6 +1,8 @@
 /**
  * The authentication event contains username and password information to login the user.
  * Contains event types for login and logout.
+ *
+ * TODO: BMR: 02/20/2013: Need to make this work. Not being used right now.
  */
 Ext.define("CafeTownsend.service.rpc.ResponderError", {
 

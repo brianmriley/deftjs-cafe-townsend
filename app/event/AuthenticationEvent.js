@@ -17,6 +17,12 @@ Ext.define('CafeTownsend.event.AuthenticationEvent', {
     username: '',
     password: '',
 
+    /**
+     * Constructor. Allows the username and password for authentication to be set on the event.
+     *
+     * @param username      The username being passed to authenticate the user.
+     * @param password      The password being passed to authenticate the user.
+     */
     constructor: function(username, password)
     {
         this.username = username;
