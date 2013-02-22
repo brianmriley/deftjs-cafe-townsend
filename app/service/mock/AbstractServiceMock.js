@@ -2,6 +2,7 @@
  * The base class for mock services adds a delay to the asynchronous call in milliseconds.
  *
  * TODO: BMR: 01/17/13: the success and fault methods can be collapsed into 1 and just use refs.
+ * TODO: BMR: 02/22/13: Consider moving this to a WASI package so it's not part of this project.
  */
 Ext.define("CafeTownsend.service.mock.AbstractServiceMock", {
     extend: "CafeTownsend.service.AbstractService",

@@ -7,6 +7,7 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
     requires: [
         "Ext.TitleBar",
         "Ext.dataview.List",
+        "Ext.field.Search"
     ],
 
     alias: "widget.employeelistview",
@@ -37,6 +38,11 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
                         ui: "action"
                     }
                 ]
+            },
+            {
+                xtype: "searchfield" ,
+                itemId:"searchInput",
+                id:"searchInput"
             },
             {
                 xtype: "list",

@@ -3,6 +3,7 @@
  * Contains event types for login and logout.
  *
  * TODO: BMR: 02/20/2013: Need to make this work. Not being used right now.
+ * TODO: BMR: 02/22/13: Consider moving this to a WASI package so it's not part of this project.
  */
 Ext.define("CafeTownsend.service.rpc.ResponderError", {
 

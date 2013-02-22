@@ -1,6 +1,8 @@
 /**
  * Contains references to the success and failure methods of an object making a service call.
  * It also contains a reference to the object using the Responder (which has the success and failure methods).
+ *
+ * TODO: BMR: 02/22/13: Consider moving this to a WASI package so it's not part of this project.
  */
 Ext.define("CafeTownsend.service.rpc.Responder", {
 

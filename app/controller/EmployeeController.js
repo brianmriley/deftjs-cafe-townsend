@@ -73,8 +73,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         var store = this.getEmployeeStore();
         store.setData(response.employeeList);
 
-        var evt = new CafeTownsend.event.EmployeeEvent();
-        this.dispatchGlobalEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_SUCCESS, evt);
+        var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_SUCCESS);
+        this.dispatchGlobalEvent(evt);
     },
 
     /**
@@ -89,8 +89,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     getEmployeeListFailure: function(response) {
         console.log("EmployeeController.getEmployeeListFailure");
 
-        var evt = new CafeTownsend.event.EmployeeEvent();
-        this.dispatchGlobalEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_FAILURE, evt);
+        var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_FAILURE);
+        this.dispatchGlobalEvent(evt);
     },
 
     ////////////////////////////////////////////////

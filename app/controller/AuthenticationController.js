@@ -98,8 +98,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
         // The server will send a token that can be used throughout the app to confirm that the user is authenticated.
         this.setSessionToken(response.sessionToken);
 
-        var evt = new CafeTownsend.event.AuthenticationEvent();
-        this.dispatchGlobalEvent(CafeTownsend.event.AuthenticationEvent.LOGIN_SUCCESS, evt);
+        var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGIN_SUCCESS);
+        this.dispatchGlobalEvent(evt);
     },
 
     /**
@@ -116,8 +116,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
 
         this.resetSessionData();
 
-        var evt = new CafeTownsend.event.AuthenticationEvent();
-        this.dispatchGlobalEvent(CafeTownsend.event.AuthenticationEvent.LOGIN_FAILURE, evt);
+        var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGIN_FAILURE);
+        this.dispatchGlobalEvent(evt);
     },
 
     /**
@@ -134,8 +134,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
 
         this.resetSessionData();
 
-        var evt = new CafeTownsend.event.AuthenticationEvent();
-        this.dispatchGlobalEvent(CafeTownsend.event.AuthenticationEvent.LOGOUT_SUCCESS, evt);
+        var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGOUT_SUCCESS);
+        this.dispatchGlobalEvent(evt);
     },
 
     /**
@@ -152,8 +152,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
 
         this.resetSessionData();
 
-        var evt = new CafeTownsend.event.AuthenticationEvent();
-        this.dispatchGlobalEvent(CafeTownsend.event.AuthenticationEvent.LOGOUT_FAILURE, evt);
+        var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGOUT_FAILURE);
+        this.dispatchGlobalEvent(evt);
     },
 
     ////////////////////////////////////////////////

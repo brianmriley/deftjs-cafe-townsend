@@ -21,18 +21,25 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
         refs: {
             employeeListView:   "employeelistview",
             logoutButton:       "employeelistview #logoutButton",
+            newEmployeeButton:  "employeelistview #newEmployeeButton",
             list:               "employeelistview #list",
+            searchInput:        "employeelistview #searchInput",
+
             employeeDetailView: "employeedetailview"
         },
 
         // set up view event to mediator mapping
         control: {
-            employeeListView: {
-                newEmployeeEvent:           "onNewEmployee"
-            },
-
             logoutButton: {
                 tap: "onLogoutButtonTap"
+            },
+
+            newEmployeeButton: {
+                tap: "onNewEmployeeButtonTap"
+            },
+
+            searchInput :{
+                keyup: "onSearchKeyUp"
             },
 
             list: {
@@ -73,8 +80,8 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
             message: "Loadng Employees..."
         });
 
-        var evt = new CafeTownsend.event.EmployeeEvent();
-        this.dispatchGlobalEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST, evt);
+        var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST);
+        this.dispatchGlobalEvent(evt);
     },
 
     /**
@@ -85,12 +92,20 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
      * @param record    The record is the data model for the item in the list currently selected.
      */
     showEmployeeDetail: function(record) {
-        console.log("EmployeeListMediator.showEmployeeDetail");
+        console.log("EmployeeListMediator.showEmployeeDetail: id = %s, employee = %s", record.get("id"), record.get("firstName"));
+        console.dir(record);
+
+        this.navigate(CafeTownsend.event.NavigationEvent.ACTION_SHOW_EMPLOYEE_DETAIL);
 
         var employeeDetailView = this.getEmployeeDetailView();
-
         employeeDetailView.setRecord(record);
-        Ext.Viewport.animateActiveItem(employeeDetailView, this.getSlideLeftTransition());
+//        employeeDetailView.populate(record);
+//        employeeDetailView.fieldset.setRecord(record);
+//        employeeDetailView.loadRecord(record);
+//        employeeDetailView.formpanel.updateRecord(formpanel.getRecord());
+//        employeeDetailView.setData(record);
+//        employeeDetailView.getFormPanel().loadRecord
+//        employeeDetailView.setValues(record);
     },
 
     ////////////////////////////////////////////////
@@ -104,7 +119,8 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
     onLoginSuccess: function () {
         console.log("EmployeeListMediator.onLoginSuccess");
 
-        Ext.Viewport.animateActiveItem(this.getEmployeeListView(), this.getSlideLeftTransition());
+        this.navigate(CafeTownsend.event.AuthenticationEvent.LOGIN_SUCCESS);
+
         this.getEmployeeListData();
     },
 
@@ -137,7 +153,17 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
     onLogoutButtonTap: function() {
         console.log("EmployeeListMediator.onLogoutButtonTap");
 
-        this.dispatchGlobalEvent(CafeTownsend.event.AuthenticationEvent.LOGOUT);
+        var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGOUT);
+        this.dispatchGlobalEvent(evt);
+    },
+
+    /**
+     * TODO
+     */
+    onNewEmployeeButtonTap: function() {
+        console.log("EmployeeListMediator.onNewEmployeeButtonTap");
+
+        this.showEmployeeDetail();
     },
 
     /**
@@ -154,7 +180,70 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
         console.log("EmployeeListMediator.onListDisclose");
 
         this.showEmployeeDetail(record);
-    }
+    },
+
+    /**
+     * TODO
+     *
+     * @param field
+     */
+    onSearchKeyUp: function(field) {
+        console.log("EmployeeListMediator.onSearchKeyUp");
+
+        //get the store and the value of the field
+        var value = field.getValue(),
+            store = this.getList().getStore();
+
+        //first clear any current filters on thes tore
+        store.clearFilter();
+
+
+        //check if a value is set first, as if it isnt we dont have to do anything
+        if (value) {
+            //the user could have entered spaces, so we must split them so we can loop through them all
+            var searches = value.split(' '),
+                regexps = [],
+                i;
+
+
+            //loop them all
+            for (i = 0; i < searches.length; i++) {
+                //if it is nothing, continue
+                if (!searches[i]) continue;
+
+
+                //if found, create a new regular expression which is case insenstive
+                regexps.push(new RegExp(searches[i], 'i'));
+            }
+
+
+            //now filter the store by passing a method
+            //the passed method will be called for each record in the store
+            store.filter(function (record) {
+                var matched = [];
+
+
+                //loop through each of the regular expressions
+                for (i = 0; i < regexps.length; i++) {
+                    var search = regexps[i],
+                        didMatch = record.get('name').match(search) ;
+
+
+                    //if it matched the first or last name, push it into the matches array
+                    matched.push(didMatch);
+                }
+
+
+                //if nothing was found, return false (dont so in the store)
+                if (regexps.length > 1 && matched.indexOf(false) != -1) {
+                    return false;
+                } else {
+                    //else true true (show in the store)
+                    return matched[0];
+                }
+            });
+        }
+    },
 
 });
 

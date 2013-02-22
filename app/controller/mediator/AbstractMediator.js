@@ -15,26 +15,49 @@
  * Consider using DeftJS here so a mediator is created and destroyed with it's accompanying view. The other issue
  * we'll run into without DeftJS is that currently the controller's (and hence all mediators) are singletons -- we
  * really want the ability to create a unique mediator instance for each view; again, DeftJS can help us here.
+ *
+ * TODO: BMR: 02/22/13: Find a way to bake the view into this class automatically.
+ * TODO: BMR: 02/22/13: Consider moving this to a WASI package so it's not part of this project.
  */
 Ext.define("CafeTownsend.controller.mediator.AbstractMediator", {
     extend: "CafeTownsend.controller.AbstractController",
-    //    extend: "Ext.app.Controller",
 
-    /*
-     TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
-    1)  Error: Error while resolving value to inject: no dependency provider found for "function() {
-        return this.constructor.apply(this, arguments);
-        }".
-    2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
+    /**
+     * TODO:
+     *
+     * @param id
+     * @param view
+     * @return {*}
      */
-//    extend: "Deft.mvc.ViewController",
-
-    config: {
-    },
-
     getComponentById: function(id, view) {
         return view.down("#" + id);
     },
+
+    /**
+     * Provides a simple slide left animation for our views.
+     *
+     * @return {Object} The transition object.
+     */
+    getSlideLeftTransition: function() {
+        return { type: "slide", direction: "left" };
+    },
+
+    /**
+     * Provides a simple slide right animation for our views.
+     *
+     * @return {Object} The transition object.
+     */
+    getSlideRightTransition: function() {
+        return { type: "slide", direction: "right" };
+    },
+
+    /**
+     * TODO: BMR: Consider moving this to a new base mediator for this project only.
+     */
+    navigate: function(action) {
+        var evt = new CafeTownsend.event.NavigationEvent(CafeTownsend.event.NavigationEvent.NAVIGATE, action);
+        this.dispatchGlobalEvent(evt);
+    }
 
 //    /**
 //     * Provides a simple helper method to show masks on the view.
@@ -61,24 +84,6 @@ Ext.define("CafeTownsend.controller.mediator.AbstractMediator", {
 //
 //        view.setMasked(arg);
 //    },
-
-    /**
-     * Provides a simple slide left animation for our views.
-     *
-     * @return {Object} The transition object.
-     */
-    getSlideLeftTransition: function() {
-        return { type: "slide", direction: "left" };
-    },
-
-    /**
-     * Provides a simple slide right animation for our views.
-     *
-     * @return {Object} The transition object.
-     */
-    getSlideRightTransition: function() {
-        return { type: "slide", direction: "right" };
-    }
 
 });
 

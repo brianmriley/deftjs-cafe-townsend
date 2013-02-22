@@ -6,21 +6,11 @@
  */
 Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
     extend: "CafeTownsend.controller.mediator.AbstractMediator",
-    //    extend: "Ext.app.Controller",
 
     requires: [
         "CafeTownsend.view.LoginView",
         "CafeTownsend.event.AuthenticationEvent"
     ],
-
-    /*
-     TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
-     1)  Error: Error while resolving value to inject: no dependency provider found for "function() {
-     return this.constructor.apply(this, arguments);
-     }".
-     2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
-     */
-//    extend: "Deft.mvc.ViewController",
 
     config: {
 
@@ -81,8 +71,8 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
             message: "Signing In..."
         });
 
-        var evt = new CafeTownsend.event.AuthenticationEvent(username, password);
-        this.dispatchGlobalEvent(CafeTownsend.event.AuthenticationEvent.LOGIN, evt);
+        var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGIN, username, password);
+        this.dispatchGlobalEvent(evt);
     },
 
     /**
@@ -130,7 +120,8 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
 
         var view = this.getLoginView();
         view.setMasked(false);
-        Ext.Viewport.animateActiveItem(view, this.getSlideRightTransition());
+
+        this.navigate(CafeTownsend.event.AuthenticationEvent.LOGOUT_SUCCESS);
     },
 
     /**
@@ -159,6 +150,9 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
 
         var username = this.getUsernameTextField().getValue();
         var password = this.getPasswordTextField().getValue();
+
+        // NOTE: if you don't reference a component multiple times you don't need to create a ref to it can simply
+        // gain access to it with the method: getComponentById()
         var label = this.getComponentById("signInFailedLabel", this.getLoginView());
         var me = this;
 

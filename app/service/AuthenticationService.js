@@ -8,7 +8,7 @@ Ext.define("CafeTownsend.service.AuthenticationService", {
     },
 
     /**
-     * The actual service call. Hits a json service and handles the success and fault accordingly.
+     * The login ajax service call. Hits a json service and handles the success and fault accordingly.
      *
      * @param username      The username being authenticated.
      * @param password      The password being authenticated.
@@ -40,9 +40,7 @@ Ext.define("CafeTownsend.service.AuthenticationService", {
     },
 
     /**
-     * The mock service call.
-     *
-     * @param responder     The responder (typically a controller) that handles the success and fault for the service.
+     * The logout ajax service call. Hits a json service and handles the success and fault accordingly.
      */
     logout: function() {
         console.log("AuthenticationService.logout");
@@ -50,10 +48,6 @@ Ext.define("CafeTownsend.service.AuthenticationService", {
         Ext.Ajax.request({
             url: "data/logout-success.json",
             method: "post",
-            params: {
-                user: username,
-                pwd: password
-            },
 
             success: function(response) {
                 console.log("AuthenticationService.logout.success");

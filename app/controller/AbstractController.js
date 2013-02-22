@@ -10,6 +10,8 @@
  * TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
  * 1)  Error: Error while resolving value to inject: no dependency provider found for "function() { return this.constructor.apply(this, arguments); }".
  * 2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
+ *
+ * TODO: BMR: 02/22/13: Consider moving this to a WASI package so it's not part of this project.
  */
 Ext.define("CafeTownsend.controller.AbstractController", {
     extend: "Ext.app.Controller",
@@ -46,9 +48,16 @@ Ext.define("CafeTownsend.controller.AbstractController", {
      * @param {Object...} args Variable number of parameters are passed to handlers.
      * @return {Boolean} Returns `false` if any of the handlers return `false`, otherwise it returns `true`.
      */
-    dispatchGlobalEvent: function(eventName, args) {
-        console.log("AbstractController.dispatchGlobalEvent: " + eventName);
+    dispatchGlobalEvent: function(event, args) {
 
+        if(event.type != null) {
+            eventName = event.type;
+            args = event;
+        } else {
+            eventName = event;
+        }
+
+        console.log("AbstractController.dispatchGlobalEvent: " + eventName);
         return this.getApplication().fireEvent(eventName, args);
     },
 
@@ -73,14 +82,16 @@ Ext.define("CafeTownsend.controller.AbstractController", {
         console.log("AbstractController.addGlobalEventListener");
 
         this.getApplication().addListener(type, handler, scope);
-//        this.addGlobalEventListener =  this.getApplication().addListener(type, handler, scope);
-//        this.addGlobalEventListener = this.getApplication().on(eventName);
+
+        // both of these work as well
+//      this.getApplication().addListener(type, handler, scope);
+//      this.getApplication().on(eventName);
     },
 
     /**
      * Removes an event handler for a given event dispatched on the application-level event bus.
      *
-     * TODO: BMR: 01/15/13: Remove event listeners
+     * TODO: BMR: 01/15/13: Remove event listeners...how?
      */
     removeGlobalEventListener: function(eventName) {
         console.log("AbstractController.removeGlobalEventListener");

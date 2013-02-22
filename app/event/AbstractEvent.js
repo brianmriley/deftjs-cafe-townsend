@@ -1,13 +1,30 @@
 /**
- * The authentication event contains username and password information to login the user.
- * Contains event types for login and logout.
+ * The base event used for all application-level event bus messaging.
+ *
+ * TODO: BMR: 02/22/13: Consider moving this to a WASI package so it's not part of this project.
  */
-Ext.define('CafeTownsend.event.AbstractEvent', {
-    
-    type: '',
+Ext.define("CafeTownsend.event.AbstractEvent", {
 
-    constructor: function(type, password)
-    {
+    /**
+     * The event type or string name of the event.
+     */
+    type: "",
+
+    /**
+     * A generic data property for any event.
+     */
+    data: null,
+
+    /**
+     * Constructor.
+     *
+     * @param type  The event type or string name of the event.
+     */
+    constructor: function(type) {
+        if( (type == null) || (type == "") ) {
+            throw new Error("the parameter 'type' cannot be null or an empty string.");
+        }
+        console.log("AbstractEvent.Constructor: type = %s", type);
         this.type = type;
     }
 })

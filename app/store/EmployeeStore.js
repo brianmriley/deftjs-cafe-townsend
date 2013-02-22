@@ -1,11 +1,11 @@
 /**
  * Contains the list of employee domain objects.
  */
-Ext.define('CafeTownsend.store.EmployeeStore', {
-    extend: 'Ext.data.Store',
+Ext.define("CafeTownsend.store.EmployeeStore", {
+    extend: "Ext.data.Store",
 
     config: {
-        model: 'CafeTownsend.model.EmployeeModel',
+        model: "CafeTownsend.model.EmployeeModel",
 
         sorters: "lastName",
 
