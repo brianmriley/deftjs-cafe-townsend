@@ -92,20 +92,15 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
      * @param record    The record is the data model for the item in the list currently selected.
      */
     showEmployeeDetail: function(record) {
-        console.log("EmployeeListMediator.showEmployeeDetail: id = %s, employee = %s", record.get("id"), record.get("firstName"));
-        console.dir(record);
+        var logMsg = (record != null)
+            ? ": id = " + record.get("id") + ", employee = " + record.get("firstName")
+            : "";
+        console.log("EmployeeListMediator.showEmployeeDetail %s", logMsg);
 
         this.navigate(CafeTownsend.event.NavigationEvent.ACTION_SHOW_EMPLOYEE_DETAIL);
 
         var employeeDetailView = this.getEmployeeDetailView();
         employeeDetailView.setRecord(record);
-//        employeeDetailView.populate(record);
-//        employeeDetailView.fieldset.setRecord(record);
-//        employeeDetailView.loadRecord(record);
-//        employeeDetailView.formpanel.updateRecord(formpanel.getRecord());
-//        employeeDetailView.setData(record);
-//        employeeDetailView.getFormPanel().loadRecord
-//        employeeDetailView.setValues(record);
     },
 
     ////////////////////////////////////////////////

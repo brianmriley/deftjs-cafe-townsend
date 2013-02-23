@@ -56,36 +56,26 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeDetailMediator", {
     },
 
     /**
-     * Dispatches the application event to get the list of employees.
-     */
-    getEmployeeDetailData: function() {
-        console.log("EmployeeDetailMediator.getEmployeeDetailData");
-
-        this.getEmployeeDetailView().setMasked({
-            xtype: "loadmask",
-            message: "Loadng Employees..."
-        });
-
-        var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST);
-        this.dispatchGlobalEvent(evt);
-    },
-
-    /**
      * Handles the show employee detail event from the employee list view. Grab the data model
      * from the selected item in the list and set it as the data provider for the detail view.
      * Finally, slide the detail view onto stage.
      *
-     * @param record    The record is the data model for the item in the list currently selected.
+     * @param employee    The employee is the data model for the item in the list currently selected.
      */
-    showEmployeeDetail: function(record) {
-        console.log("EmployeeDetailMediator.showEmployeeDetail");
+    saveEmployee: function(employee) {
+        console.log("EmployeeDetailMediator.saveEmployee");
 
-        var employeeDetailView = this.getEmployeeDetailView();
+        if(employee != null) {
+            var id = employee.id;
+            if( (id != null) && (id != "") ) {
+                var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE);
+            } else {
+                var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.CREATE_EMPLOYEE);
+            }
 
-        employeeDetailView.setRecord(record);
-
-        this.navigate("showEmployeeDetail");
-//        Ext.Viewport.animateActiveItem(employeeDetailView, this.getSlideLeftTransition());
+            evt.employee = employee;
+            this.dispatchGlobalEvent(evt);
+        }
     },
 
     ////////////////////////////////////////////////
@@ -134,16 +124,19 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeDetailMediator", {
         console.log("EmployeeDetailMediator.onBackButtonTap");
 
         this.navigate(CafeTownsend.event.NavigationEvent.ACTION_BACK_SHOW_EMPLOYEE_LIST);
+    },
+
+    /**
+     * TODO
+     */
+    onSaveEmployeeButtonTap: function() {
+        console.log("EmployeeDetailMediator.onSaveEmployeeButtonTap");
+
+        var employee = this.getEmployeeDetailView().getRecord();
+        var newEmployee = this.getEmployeeDetailView().getValues();
+        newEmployee.id = employee.internalId;
+        this.saveEmployee(newEmployee);
     }
-//
-//    /**
-//     * TODO
-//     */
-//    onSaveEmployeeButtonTap: function() {
-//        console.log("EmployeeDetailMediator.onSaveEmployeeButtonTap");
-//
-//        this.showEmployeeDetail();
-//    },
 //
 //    /**
 //     * TODO

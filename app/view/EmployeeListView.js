@@ -1,5 +1,7 @@
 /**
  * The list of employees view for the application.
+ *
+ *  TODO: BMR: 02/22/13: Add support for search. The search input isn't currently in the view.
  */
 Ext.define("CafeTownsend.view.EmployeeListView", {
     extend: "Ext.Panel",
@@ -39,11 +41,11 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
                     }
                 ]
             },
-            {
-                xtype: "searchfield" ,
-                itemId:"searchInput",
-                id:"searchInput"
-            },
+//            {
+//                xtype: "searchfield" ,
+//                itemId:"searchInput",
+//                id:"searchInput"
+//            },
             {
                 xtype: "list",
                 itemId: "list",

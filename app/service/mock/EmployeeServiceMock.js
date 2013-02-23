@@ -13,8 +13,6 @@ Ext.define("CafeTownsend.service.mock.EmployeeServiceMock", {
     getEmployeeList: function() {
         console.log("EmployeeServiceMock.getEmployeeList");
 
-        var me = this;
-
         var response = {
             success: true,
             employeeList: [
@@ -32,6 +30,27 @@ Ext.define("CafeTownsend.service.mock.EmployeeServiceMock", {
                 { id: 11,   firstName: "Nico",    lastName: "Ferrero" },
                 { id: 12,   firstName: "Jason",   lastName: "Johnston"}
             ]
+        };
+
+        this.delayedSuccess(response);
+    },
+
+    /**
+     * The mock service call.
+     */
+    updateEmployee: function(employee) {
+        console.log("EmployeeServiceMock.updateEmployee: id = %s", employee.id);
+
+        var response = {
+            success: true,
+            employee: {
+                id: employee.id,
+                firstName: employee.firstName,
+                lastName: employee.lastName,
+                email: employee.email,
+                phoneNumber: employee.phoneNumber,
+                startDate: employee.startDate
+            }
         };
 
         this.delayedSuccess(response);

@@ -46,8 +46,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
      * @param username      The username being passed to authenticate the user.
      * @param password      The password being passed to authenticate the user.
      */
-    loginCommand: function(username, password) {
-        console.log("AuthenticationController.loginCommand: username = " + username + ", password = " + password);
+    login: function(username, password) {
+        console.log("AuthenticationController.login: username = " + username + ", password = " + password);
 
         var responder = new CafeTownsend.service.rpc.Responder(this.loginSuccess, this.loginFailure, this);
         var service = this.getAuthenticationService();
@@ -61,8 +61,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
      * Handles successful and failed service calls and broadcasts global events reflecting thus
      * upon service completion and model updates.
      */
-    logoutCommand: function() {
-        console.log("AuthenticationController.logoutCommand");
+    logout: function() {
+        console.log("AuthenticationController.logout");
 
         var responder = new CafeTownsend.service.rpc.Responder(this.logoutSuccess, this.logoutFailure, this);
         var service = this.getAuthenticationService();
@@ -171,7 +171,7 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
         var password = event.password;
         console.log("AuthenticationController.onLogin: username = %s, password = %s", username, password);
 
-        this.loginCommand(username, password);
+        this.login(username, password);
     },
 
     /**
@@ -183,7 +183,7 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
     onLogout: function(event) {
         console.log("AuthenticationController.onLogout");
 
-        this.logoutCommand();
+        this.logout();
     }
 
 });

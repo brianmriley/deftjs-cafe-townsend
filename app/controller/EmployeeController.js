@@ -37,6 +37,9 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         console.log("EmployeeController.setupGlobalEventListeners");
 
         this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST, this.onGetEmployeeList, this);
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.CREATE_EMPLOYEE, this.onCreateEmployee, this);
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE, this.onUpdateEmployee, this);
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.DELETE_EMPLOYEE, this.onDeleteEmployee, this);
     },
 
     /**
@@ -44,14 +47,29 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
      * Handles successful and failed service calls and broadcasts global events reflecting thus
      * upon service completion and model updates.
      */
-    getEmployeeListCommand: function() {
-        console.log("EmployeeController.getEmployeeListCommand");
+    getEmployeeList: function() {
+        console.log("EmployeeController.getEmployeeList");
 
         var responder = new CafeTownsend.service.rpc.Responder(this.getEmployeeListSuccess, this.getEmployeeListFailure, this);
         var service = this.getEmployeeService();
 
         service.setResponder(responder);
         service.getEmployeeList();
+    },
+
+    /**
+     * Acts like a command object and performs authentication by using the referenced service.
+     * Handles successful and failed service calls and broadcasts global events reflecting thus
+     * upon service completion and model updates.
+     */
+    updateEmployee: function(employee) {
+        console.log("EmployeeController.updateEmployee");
+
+        var responder = new CafeTownsend.service.rpc.Responder(this.updateEmployeeSuccess, this.updateEmployeeFailure, this);
+        var service = this.getEmployeeService();
+
+        service.setResponder(responder);
+        service.updateEmployee(employee);
     },
 
     ////////////////////////////////////////////////
@@ -93,6 +111,48 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         this.dispatchGlobalEvent(evt);
     },
 
+    /**
+     * Handles the successful service call and takes the response data packet as a parameter.
+     *
+     * <p>
+     * Inspects the response for success and fires off the corresponding success event.
+     * </p>
+     *
+     * @param response  The response data packet from the successful service call.
+     */
+    updateEmployeeSuccess: function(response) {
+        console.log("EmployeeController.updateEmployeeSuccess");
+
+        var store = this.getEmployeeStore();
+        var employee = store.findRecord('id', response.employee.id);
+
+        employee.data.firstName = response.employee.firstName;
+        employee.data.lastName = response.employee.lastName;
+        employee.data.phoneNumber = response.employee.phoneNumber;
+        employee.data.email = response.employee.email;
+
+        store.sync();
+
+        var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE_SUCCESS);
+        this.dispatchGlobalEvent(evt);
+    },
+
+    /**
+     * Handles the failed service call and takes the response data packet as a parameter.
+     *
+     * <p>
+     * Fires off the corresponding fault event.
+     * </p>
+     *
+     * @param response  The response data packet from the successful service call.
+     */
+    updateEmployeeFailure: function(response) {
+        console.log("EmployeeController.updateEmployeeFailure");
+
+        var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE_FAILURE);
+        this.dispatchGlobalEvent(evt);
+    },
+
     ////////////////////////////////////////////////
     // EVENT BUS HANDLERS
     ////////////////////////////////////////////////
@@ -106,7 +166,43 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     onGetEmployeeList: function(event) {
         console.log("EmployeeController.onGetEmployeeList");
 
-        this.getEmployeeListCommand();
+        this.getEmployeeList();
+    },
+
+    /**
+     * Handles the login event on the application-level event bus. Grabs the username and password
+     * and calls a functional method that's more testable than this event handler.
+     *
+     * @param event Reference to the login event. Contains the username and password.
+     */
+    onCreateEmployee: function(event) {
+        console.log("EmployeeController.onCreateEmployee");
+
+//        this.getEmployeeList();
+    },
+
+    /**
+     * Handles the login event on the application-level event bus. Grabs the username and password
+     * and calls a functional method that's more testable than this event handler.
+     *
+     * @param event Reference to the login event. Contains the username and password.
+     */
+    onUpdateEmployee: function(event) {
+        console.log("EmployeeController.onUpdateEmployee");
+
+        this.updateEmployee(event.employee);
+    },
+
+    /**
+     * Handles the login event on the application-level event bus. Grabs the username and password
+     * and calls a functional method that's more testable than this event handler.
+     *
+     * @param event Reference to the login event. Contains the username and password.
+     */
+    onDeleteEmployee: function(event) {
+        console.log("EmployeeController.onDeleteEmployee");
+
+//        this.getEmployeeList();
     }
 
 });
