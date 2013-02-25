@@ -4,13 +4,13 @@
  * <ul>
  * <li>Sets up loaders and class loader dependencies</li>
  * <li>Sencha MVC infrastructure (listing out the models, views, and controllers)</li>
+ * <li>WASI Sencha Extensions library</li>
  * <li>DeftJS IoC and dependencies</li>
  * <li>Adds the views to the main Viewport when the application launches</li>
  * </ul>
  *
  * TODO: BMR: 02/02/13: Add unit tests.
  * TODO: BMR: 02/22/13: Add localization.
- * TODO: BMR: 02/25/13: Wrap the store for CRUD methods.
  * TODO: BMR: 02/25/13: AsyncToken for unique service calls so success/fault handlers are based on unique call and not overwritten..
  */
 Ext.Loader.setConfig({
@@ -88,10 +88,10 @@ Ext.application({
         ////////////////////////////////////////////
         // MEDIATORS
         ////////////////////////////////////////////
-        "mediator.ViewportMediator",
-        "mediator.LoginMediator",
-        "mediator.EmployeeListMediator",
-        "mediator.EmployeeDetailMediator"
+        "CafeTownsend.mediator.ViewportMediator",
+        "CafeTownsend.mediator.LoginMediator",
+        "CafeTownsend.mediator.EmployeeListMediator",
+        "CafeTownsend.mediator.EmployeeDetailMediator"
     ],
 
     /**

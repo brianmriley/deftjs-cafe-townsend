@@ -155,7 +155,6 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         var store = this.getEmployeeStore();
 
         store.add(response.employee);
-        store.sync();
 
         var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.CREATE_EMPLOYEE_SUCCESS);
         this.dispatchGlobalEvent(evt);
@@ -190,16 +189,7 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         console.log("EmployeeController.updateEmployeeSuccess");
 
         var store = this.getEmployeeStore();
-        var employee = store.findRecord('id', response.employee.id);
-
-        employee.data.firstName = response.employee.firstName;
-        employee.data.lastName = response.employee.lastName;
-        employee.data.phoneNumber = response.employee.phoneNumber;
-        employee.data.email = response.employee.email;
-
-//        store.update(employee);
-        employee.dirty = true;
-        store.sync();
+        store.update(response.employee);
 
         var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE_SUCCESS);
         this.dispatchGlobalEvent(evt);
@@ -237,7 +227,6 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         var employee = store.findRecord("id", response.employee.id);
 
         store.remove(employee);
-        store.sync();
 
         var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.DELETE_EMPLOYEE_SUCCESS);
         this.dispatchGlobalEvent(evt);

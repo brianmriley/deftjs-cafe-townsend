@@ -14,7 +14,14 @@ Ext.define("CafeTownsend.event.AuthenticationEvent", {
         LOGOUT_FAILURE: "CafeTownsend.event.AuthenticationEvent.LOGOUT_FAILURE"
     },
 
+    /**
+     * The username property usually associated with user login.
+     */
     username: "",
+
+    /**
+     * The password property usually associated with user login.
+     */
     password: "",
 
     /**
