@@ -7,11 +7,11 @@
  * 2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
  */
 Ext.define("CafeTownsend.controller.EmployeeController", {
-    extend: "CafeTownsend.controller.AbstractController",
+    extend: "SenchaExtensions.mvc.controller.AbstractController",
 
     requires: [
         "CafeTownsend.event.EmployeeEvent",
-        "CafeTownsend.service.rpc.Responder"
+        "SenchaExtensions.mvc.service.rpc.Responder"
     ],
 
     inject: [
@@ -26,7 +26,6 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
 
         // create a public property so we can inject our store
         employeeStore: null
-
     },
 
     /**
@@ -50,7 +49,7 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     getEmployeeList: function() {
         console.log("EmployeeController.getEmployeeList");
 
-        var responder = new CafeTownsend.service.rpc.Responder(this.getEmployeeListSuccess, this.getEmployeeListFailure, this);
+        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.getEmployeeListSuccess, this.getEmployeeListFailure, this);
         var service = this.getEmployeeService();
 
         service.setResponder(responder);
@@ -65,7 +64,7 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     createEmployee: function(employee) {
         console.log("EmployeeController.createEmployee");
 
-        var responder = new CafeTownsend.service.rpc.Responder(this.createEmployeeSuccess, this.createEmployeeFailure, this);
+        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.createEmployeeSuccess, this.createEmployeeFailure, this);
         var service = this.getEmployeeService();
 
         service.setResponder(responder);
@@ -80,7 +79,7 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     updateEmployee: function(employee) {
         console.log("EmployeeController.updateEmployee");
 
-        var responder = new CafeTownsend.service.rpc.Responder(this.updateEmployeeSuccess, this.updateEmployeeFailure, this);
+        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.updateEmployeeSuccess, this.updateEmployeeFailure, this);
         var service = this.getEmployeeService();
 
         service.setResponder(responder);
@@ -95,7 +94,7 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     deleteEmployee: function(employee) {
         console.log("EmployeeController.deleteEmployee");
 
-        var responder = new CafeTownsend.service.rpc.Responder(this.deleteEmployeeSuccess, this.deleteEmployeeFailure, this);
+        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.deleteEmployeeSuccess, this.deleteEmployeeFailure, this);
         var service = this.getEmployeeService();
 
         service.setResponder(responder);

@@ -2,7 +2,7 @@
  * The authentication event contains data and event types to login/out the user.
  */
 Ext.define("CafeTownsend.event.AuthenticationEvent", {
-    extend: "CafeTownsend.event.AbstractEvent",
+    extend: "SenchaExtensions.mvc.event.AbstractEvent",
 
     statics: {
         LOGIN:          "CafeTownsend.event.AuthenticationEvent.LOGIN",

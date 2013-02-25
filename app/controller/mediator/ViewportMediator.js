@@ -7,7 +7,7 @@
  * TODO: BMR: 02/22/13: Don't add all the views to the stage at once. Do it on demand.
  */
 Ext.define("CafeTownsend.controller.mediator.ViewportMediator", {
-    extend: "CafeTownsend.controller.mediator.AbstractMediator",
+    extend: "SenchaExtensions.mvc.controller.mediator.AbstractMediator",
 
     requires: [
         "CafeTownsend.event.AuthenticationEvent",
@@ -18,9 +18,9 @@ Ext.define("CafeTownsend.controller.mediator.ViewportMediator", {
 
         // create references to this mediator's views so we can listen to events and grab data from them
         refs: {
-            loginView:              "loginview",
-            employeeListView:       "employeelistview",
-            employeeDetailView:     "employeedetailview"
+            loginView:              "loginView",
+            employeeListView:       "employeeListView",
+            employeeDetailView:     "employeeDetailView"
         }
     },
 

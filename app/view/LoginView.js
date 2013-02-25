@@ -3,7 +3,7 @@
  */
 Ext.define("CafeTownsend.view.LoginView", {
     extend: "Ext.form.Panel",
-    alias: "widget.loginview",
+    alias: "widget.loginView",
 
     requires: [
         "Ext.form.FieldSet",

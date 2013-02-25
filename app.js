@@ -5,22 +5,24 @@
  * <li>Sets up loaders and class loader dependencies</li>
  * <li>Sencha MVC infrastructure (listing out the models, views, and controllers)</li>
  * <li>DeftJS IoC and dependencies</li>
- * <li>dds the views to the main Viewport when the application launches</li>
+ * <li>Adds the views to the main Viewport when the application launches</li>
  * </ul>
  *
  * TODO: BMR: 02/02/13: Add unit tests.
  * TODO: BMR: 02/22/13: Add localization.
+ * TODO: BMR: 02/25/13: Wrap the store for CRUD methods.
  */
 Ext.Loader.setConfig({
     enabled: true,
     disableCaching:true,
     paths: {
+        "SenchaExtensions": "lib/wasi-sencha-ext/SenchaExtensions/",
         "Deft": "lib/deft-0.8.8/Deft/"
     }
 });
 
 Ext.syncRequire([
-    // DEftJS core classes
+    // DeftJS core classes
     "Deft.core.Class",
     "Deft.mixin.Controllable",
     "Deft.mixin.Injectable"
@@ -101,9 +103,9 @@ Ext.application({
         console.log("app.launch");
 
         Ext.Viewport.add([
-            { xtype: "loginview" },
-            { xtype: "employeelistview" },
-            { xtype: "employeedetailview" }
+            { xtype: "loginView" },
+            { xtype: "employeeListView" },
+            { xtype: "employeeDetailView" }
         ]);
     }
 });

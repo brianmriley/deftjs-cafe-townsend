@@ -2,7 +2,7 @@
  * The authentication service object.
  */
 Ext.define("CafeTownsend.service.AuthenticationService", {
-    extend: "CafeTownsend.service.AbstractService",
+    extend: "SenchaExtensions.mvc.service.AbstractService",
 
     config: {
     },

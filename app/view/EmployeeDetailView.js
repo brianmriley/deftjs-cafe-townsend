@@ -9,7 +9,7 @@ Ext.define("CafeTownsend.view.EmployeeDetailView", {
         "Ext.Toolbar"
     ],
 
-    alias: "widget.employeedetailview",
+    alias: "widget.employeeDetailView",
 
     config: {
 

@@ -2,7 +2,7 @@
  * The employee list mediator essentially fulfills the passive view pattern for the employee list view.
  */
 Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
-    extend: "CafeTownsend.controller.mediator.AbstractMediator",
+    extend: "SenchaExtensions.mvc.controller.mediator.AbstractMediator",
 
     requires: [
         "CafeTownsend.event.EmployeeEvent"
@@ -19,13 +19,13 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
 
         // create references to this mediator's views so we can listen to events and grab data from them
         refs: {
-            employeeListView:   "employeelistview",
-            logoutButton:       "employeelistview #logoutButton",
-            newEmployeeButton:  "employeelistview #newEmployeeButton",
-            list:               "employeelistview #list",
-            searchInput:        "employeelistview #searchInput",
+            employeeListView:   "employeeListView",
+            logoutButton:       "employeeListView #logoutButton",
+            newEmployeeButton:  "employeeListView #newEmployeeButton",
+            list:               "employeeListView #list",
+            searchInput:        "employeeListView #searchInput",
 
-            employeeDetailView: "employeedetailview"
+            employeeDetailView: "employeeDetailView"
         },
 
         // set up view event to mediator mapping

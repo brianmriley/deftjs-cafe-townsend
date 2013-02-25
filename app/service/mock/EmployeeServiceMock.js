@@ -2,7 +2,7 @@
  * The mock authentication service object.
  */
 Ext.define("CafeTownsend.service.mock.EmployeeServiceMock", {
-    extend: "CafeTownsend.service.mock.AbstractServiceMock",
+    extend: "SenchaExtensions.mvc.service.mock.AbstractServiceMock",
 
     config: {
     },

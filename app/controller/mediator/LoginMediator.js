@@ -5,7 +5,7 @@
  * different; eg, a login button on a desktop app could be click whereas mobile could be tap.
  */
 Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
-    extend: "CafeTownsend.controller.mediator.AbstractMediator",
+    extend: "SenchaExtensions.mvc.controller.mediator.AbstractMediator",
 
     requires: [
         "CafeTownsend.view.LoginView",
@@ -16,10 +16,10 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
 
         // create references to this mediator's views so we can listen to events and grab data from them
         refs: {
-            loginView:              "loginview",
-            logInButton:            "loginview #logInButton",
-            usernameTextField:      "loginview #usernameTextField",
-            passwordTextField:      "loginview #passwordTextField"
+            loginView:              "loginView",
+            logInButton:            "loginView #logInButton",
+            usernameTextField:      "loginView #usernameTextField",
+            passwordTextField:      "loginView #passwordTextField"
         },
 
         // set up view event to mediator mapping

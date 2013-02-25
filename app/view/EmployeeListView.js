@@ -12,7 +12,7 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
         "Ext.field.Search"
     ],
 
-    alias: "widget.employeelistview",
+    alias: "widget.employeeListView",
 
     config: {
 

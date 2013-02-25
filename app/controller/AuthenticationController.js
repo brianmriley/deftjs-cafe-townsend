@@ -7,11 +7,11 @@
  * 2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
  */
 Ext.define("CafeTownsend.controller.AuthenticationController", {
-    extend: "CafeTownsend.controller.AbstractController",
+    extend: "SenchaExtensions.mvc.controller.AbstractController",
 
     requires: [
         "CafeTownsend.event.AuthenticationEvent",
-        "CafeTownsend.service.rpc.Responder"
+        "SenchaExtensions.mvc.service.rpc.Responder"
     ],
 
     inject: [
@@ -49,7 +49,7 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
     login: function(username, password) {
         console.log("AuthenticationController.login: username = " + username + ", password = " + password);
 
-        var responder = new CafeTownsend.service.rpc.Responder(this.loginSuccess, this.loginFailure, this);
+        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.loginSuccess, this.loginFailure, this);
         var service = this.getAuthenticationService();
 
         service.setResponder(responder);
@@ -64,7 +64,7 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
     logout: function() {
         console.log("AuthenticationController.logout");
 
-        var responder = new CafeTownsend.service.rpc.Responder(this.logoutSuccess, this.logoutFailure, this);
+        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.logoutSuccess, this.logoutFailure, this);
         var service = this.getAuthenticationService();
 
         service.setResponder(responder);
