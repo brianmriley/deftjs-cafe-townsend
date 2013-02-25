@@ -100,7 +100,11 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeListMediator", {
         this.navigate(CafeTownsend.event.NavigationEvent.ACTION_SHOW_EMPLOYEE_DETAIL);
 
         var employeeDetailView = this.getEmployeeDetailView();
-        employeeDetailView.setRecord(record);
+        if(record != null) {
+            employeeDetailView.setRecord(record);
+        } else {
+            employeeDetailView.reset();
+        }
     },
 
     ////////////////////////////////////////////////

@@ -38,8 +38,50 @@ Ext.define("CafeTownsend.service.mock.EmployeeServiceMock", {
     /**
      * The mock service call.
      */
+    createEmployee: function(employee) {
+        console.log("EmployeeServiceMock.createEmployee");
+
+        var response = {
+            success: true,
+            employee: {
+                id: this.getRandomInt(1000, 99999),
+                firstName: employee.firstName,
+                lastName: employee.lastName,
+                email: employee.email,
+                phoneNumber: employee.phoneNumber,
+                startDate: employee.startDate
+            }
+        };
+
+        this.delayedSuccess(response);
+    },
+
+    /**
+     * The mock service call.
+     */
     updateEmployee: function(employee) {
         console.log("EmployeeServiceMock.updateEmployee: id = %s", employee.id);
+
+        var response = {
+            success: true,
+            employee: {
+                id: employee.id,
+                firstName: employee.firstName,
+                lastName: employee.lastName,
+                email: employee.email,
+                phoneNumber: employee.phoneNumber,
+                startDate: employee.startDate
+            }
+        };
+
+        this.delayedSuccess(response);
+    },
+
+    /**
+     * The mock service call.
+     */
+    deleteEmployee: function(employee) {
+        console.log("EmployeeServiceMock.deleteEmployee: id = %s", employee.id);
 
         var response = {
             success: true,

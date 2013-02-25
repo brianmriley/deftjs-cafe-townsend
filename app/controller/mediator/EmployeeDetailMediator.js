@@ -49,69 +49,105 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeDetailMediator", {
         this.callParent();
         console.log("EmployeeDetailMediator.setupGlobalEventListeners");
 
-//        this.addGlobalEventListener(CafeTownsend.event.AuthenticationEvent.LOGIN_SUCCESS, this.onLoginSuccess, this);
-//
-//        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_SUCCESS, this.onGetEmployeeDetailSuccess, this);
-//        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_FAILURE, this.onGetEmployeeDetailFailure, this);
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.CREATE_EMPLOYEE_SUCCESS, this.onCreateEmployeeSuccess, this);
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE_SUCCESS, this.onUpdateEmployeeSuccess, this);
+        this.addGlobalEventListener(CafeTownsend.event.EmployeeEvent.DELETE_EMPLOYEE_SUCCESS, this.onDeleteEmployeeSuccess, this);
     },
 
     /**
-     * Handles the show employee detail event from the employee list view. Grab the data model
-     * from the selected item in the list and set it as the data provider for the detail view.
-     * Finally, slide the detail view onto stage.
+     * TODO
      *
      * @param employee    The employee is the data model for the item in the list currently selected.
      */
     saveEmployee: function(employee) {
         console.log("EmployeeDetailMediator.saveEmployee");
 
+        var evt;
+        var msg;
+
         if(employee != null) {
+
             var id = employee.id;
+
             if( (id != null) && (id != "") ) {
-                var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE);
+                evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE);
+                msg = "Updating Employee...";
             } else {
-                var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.CREATE_EMPLOYEE);
+                evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.CREATE_EMPLOYEE);
+                msg = "Creating Employee...";
             }
+
+            this.getEmployeeDetailView().setMasked({
+                xtype: "loadmask",
+                message: msg
+            });
 
             evt.employee = employee;
             this.dispatchGlobalEvent(evt);
         }
     },
 
+    /**
+     * TODO
+     *
+     * @param employee    The employee is the data model for the item in the list currently selected.
+     */
+    deleteEmployee: function(employee) {
+        console.log("EmployeeDetailMediator.deleteEmployee");
+
+        if(employee != null) {
+
+            this.getEmployeeDetailView().setMasked({
+                xtype: "loadmask",
+                message: "Deleting Employee..."
+            });
+
+            var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.DELETE_EMPLOYEE);
+            evt.employee = employee;
+
+            this.dispatchGlobalEvent(evt);
+        }
+    },
+
+    backToEmployeeList: function() {
+        console.log("EmployeeDetailMediator.backToEmployeeList");
+
+        this.navigate(CafeTownsend.event.NavigationEvent.ACTION_BACK_SHOW_EMPLOYEE_LIST);
+    },
+
     ////////////////////////////////////////////////
     // EVENT BUS HANDLERS
     ////////////////////////////////////////////////
 
-//    /**
-//     * Handles the login success event from the login controller. Slide the employee list view
-//     * onto stage.
-//     */
-//    onLoginSuccess: function () {
-//        console.log("EmployeeDetailMediator.onLoginSuccess");
-//
-//        this.navigate("showEmployeeDetail");
-//        Ext.Viewport.animateActiveItem(this.getEmployeeDetailView(), this.getSlideLeftTransition());
-//        this.getEmployeeDetailData();
-//    },
-//
-//    /**
-//     * Handles the get employees success event from the login controller.
-//     */
-//    onGetEmployeeDetailSuccess: function () {
-//        console.log("EmployeeDetailMediator.onGetEmployeeDetailSuccess");
-//
-//        this.getEmployeeDetailView().setMasked(false);
-//        this.getList().setStore(this.getEmployeeStore());
-//    },
-//
-//    /**
-//     * Handles the get employees failure event from the login controller.
-//     */
-//    onGetEmployeeDetailFailure: function () {
-//        console.log("EmployeeDetailMediator.onGetEmployeeDetailFailure");
-//
-//        this.getEmployeeDetailView().setMasked(false);
-//    },
+    /**
+     * Handles the get employees success event from the login controller.
+     */
+    onCreateEmployeeSuccess: function () {
+        console.log("EmployeeDetailMediator.onCreateEmployeeSuccess");
+
+        this.getEmployeeDetailView().setMasked(false);
+        this.backToEmployeeList();
+    },
+
+    /**
+     * Handles the get employees failure event from the login controller.
+     */
+    onUpdateEmployeeSuccess: function () {
+        console.log("EmployeeDetailMediator.onUpdateEmployeeFailure");
+
+        this.getEmployeeDetailView().setMasked(false);
+        this.backToEmployeeList();
+    },
+
+    /**
+     * Handles the get employees failure event from the login controller.
+     */
+    onDeleteEmployeeSuccess: function () {
+        console.log("EmployeeDetailMediator.onDeleteEmployeeSuccess");
+
+        this.getEmployeeDetailView().setMasked(false);
+        this.backToEmployeeList();
+    },
 
     ////////////////////////////////////////////////
     // VIEW EVENT HANDLERS
@@ -123,7 +159,7 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeDetailMediator", {
     onBackButtonTap: function() {
         console.log("EmployeeDetailMediator.onBackButtonTap");
 
-        this.navigate(CafeTownsend.event.NavigationEvent.ACTION_BACK_SHOW_EMPLOYEE_LIST);
+        this.backToEmployeeList();
     },
 
     /**
@@ -134,18 +170,25 @@ Ext.define("CafeTownsend.controller.mediator.EmployeeDetailMediator", {
 
         var employee = this.getEmployeeDetailView().getRecord();
         var newEmployee = this.getEmployeeDetailView().getValues();
-        newEmployee.id = employee.internalId;
+
+        // if this is a new employee record, there's no id available
+        if(employee != null) {
+            newEmployee.id = employee.data.id;
+        }
+
         this.saveEmployee(newEmployee);
+    },
+
+    /**
+     * TODO
+     */
+    onDeleteButtonTap: function() {
+        console.log("EmployeeDetailMediator.onDeleteButtonTap");
+
+        var employee = this.getEmployeeDetailView().getRecord();
+
+        this.deleteEmployee(employee.data);
     }
-//
-//    /**
-//     * TODO
-//     */
-//    onDeleteButtonTap: function() {
-//        console.log("EmployeeDetailMediator.onDeleteButtonTap");
-//
-//        this.showEmployeeDetail();
-//    }
 
 });
 

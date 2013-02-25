@@ -39,10 +39,10 @@ Ext.define("CafeTownsend.service.AbstractService", {
             "You must provide a responder object to the service that contains either a custom defined " +
             "success method that exists on the service's caller or a default 'success()' or 'failure()' callback." +
             "Set the responder on the object by doing:\n" +
-            "var responder = new CafeTownsend.service.rpc.Responder(this.logoutSuccess, this.logoutFailure, this);\n" +
+            "var responder = new CafeTownsend.service.rpc.Responder(this.myCustomSuccess, this.myCustomFailure, this);\n" +
             "service.setResponder(responder);\n" +
             "or\n" +
-            "service.setResponder({ success: me.mySuccess, fault: me.myFailure, scope: me});"
+            "service.setResponder({ success: this.myCustomSuccess, fault: this.myCustomFailure, scope: this});"
     },
 
     config: {

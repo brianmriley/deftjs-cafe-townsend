@@ -7,6 +7,9 @@
  * <li>DeftJS IoC and dependencies</li>
  * <li>dds the views to the main Viewport when the application launches</li>
  * </ul>
+ *
+ * TODO: BMR: 02/02/13: Add unit tests.
+ * TODO: BMR: 02/22/13: Add localization.
  */
 Ext.Loader.setConfig({
     enabled: true,
@@ -40,13 +43,13 @@ Ext.onReady(function () {
         // IMPL
         ////////////////////////////////////////////
 //        authenticationService: "CafeTownsend.service.AuthenticationService",
+        employeeStore:          "CafeTownsend.store.EmployeeStore",
 
         ////////////////////////////////////////////
         // MOCKS
         ////////////////////////////////////////////
         authenticationService:  "CafeTownsend.service.mock.AuthenticationServiceMock",
-        employeeService:        "CafeTownsend.service.mock.EmployeeServiceMock",
-        employeeStore:          "CafeTownsend.store.EmployeeStore"
+        employeeService:        "CafeTownsend.service.mock.EmployeeServiceMock"
     });
 });
 
@@ -77,19 +80,22 @@ Ext.application({
         // CONTROLLERS
         ////////////////////////////////////////////
         "AuthenticationController",
-        "LogoutController",
         "EmployeeController",
 
         ////////////////////////////////////////////
         // MEDIATORS
         ////////////////////////////////////////////
+        "mediator.ViewportMediator",
         "mediator.LoginMediator",
-        "mediator.EmployeeListMediator"
+        "mediator.EmployeeListMediator",
+        "mediator.EmployeeDetailMediator"
     ],
 
     /**
      * Add the views to the stage. Not optimal since we don't need them all upfront, but it'll get the
      * ball rolling in the right direction for a PoC.
+     *
+     * TODO: BMR: 02/22/13: Don't add all the views to the stage at once. Do it on demand.
      */
     launch: function () {
         console.log("app.launch");
