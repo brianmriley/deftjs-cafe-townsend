@@ -55,9 +55,10 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
     },
 
     /**
+     * The functional, testable login method. Show a loading mask and dispatch the application-level login event.
      *
-     * @param username
-     * @param password
+     * @param username      The username being passed to authenticate the user.
+     * @param password      The password being passed to authenticate the user.
      */
     login: function(username, password) {
         console.log("LoginMediator.login: username = " + username + ", password = " + password);
@@ -76,8 +77,9 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
     },
 
     /**
-     * Sets the
-     * @param message
+     * Shows the login failed label.
+     *
+     * @param message   The message string displayed for a failed login.
      */
     showSignInFailedMessage: function(message) {
         console.log("LoginMediator.showSignInFailedMessage: " + message);
@@ -87,10 +89,20 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
         label.show();
     },
 
+    /**
+     * Determines if the credentials are valid for login.
+     *
+     * @param username      The username being passed to authenticate the user.
+     * @param password      The password being passed to authenticate the user.
+     * @return {Boolean}    Flag indicating if the supplied username and password are valid.
+     */
     areLoginCredentialsValid: function(username, password) {
         return (username.length !== 0 && password.length !== 0);
     },
 
+    /**
+     * Resets the view's login fields.
+     */
     reset: function() {
         this.getUsernameTextField().setValue("");
         this.getPasswordTextField().setValue("");
@@ -101,8 +113,7 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
     ////////////////////////////////////////////////
 
     /**
-     * Handles the login success event from the login controller. Currently doesn't do anything but
-     * still here (for now) as a placeholder.
+     * Handles the login success event from the login controller. Removes the loading mask from the view.
      */
     onLoginSuccess: function () {
         console.log("LoginMediator.onLoginSuccess");
@@ -125,13 +136,15 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
     },
 
     /**
-     * Handles the login failure event from the login controller.
+     * Handles the login failure event from the login controller. Removes the loading mask from the view.
+     * Shows the faied login message.
      */
     onLoginFailure: function () {
         console.log("LoginMediator.onLoginFailure");
 
         var view = this.getLoginView();
         view.setMasked(false);
+
         this.showSignInFailedMessage("Login failed. Incorrect username or password.");
     },
 
@@ -140,10 +153,10 @@ Ext.define("CafeTownsend.controller.mediator.LoginMediator", {
     ////////////////////////////////////////////////
 
     /**
-     * Handles the simple login event from the login view. Grabs the username and password
-     * and dispatches them to the AuthenticationController.
+     * Handles the simple tap event from the login view's submit button. Grabs the username and password
+     * and passes them to the testable login method if the login credentails are valid.
      *
-     * @param event The tao event from the login button on the login view.
+     * @param event The tap event from the login button on the login view.
      */
     onLoginButtonTap: function(event) {
         console.log("LoginMediator.onLoginButtonTap");

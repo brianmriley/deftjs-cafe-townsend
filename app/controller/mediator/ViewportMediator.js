@@ -1,5 +1,5 @@
 /**
- * The viewport mediator essentially fulfills the passive view pattern for the login view.
+ * The viewport mediator essentially fulfills the passive view pattern for the application's's Viewport.
  *
  * It is expected that different form factors may require a new mediator implementation as the events could be
  * different; eg, a login button on a desktop app could be click whereas mobile could be tap.
@@ -39,9 +39,10 @@ Ext.define("CafeTownsend.controller.mediator.ViewportMediator", {
     },
 
     /**
-     * TODO
+     * Maps the current application action like login, logout, show a view, etc and navigates to a
+     * corresponding view.
      *
-     * @param action
+     * @param action    The current application-level action.
      */
     navigate: function(action) {
         console.log("ViewportMediator.navigate: action = %s", action);
@@ -60,13 +61,11 @@ Ext.define("CafeTownsend.controller.mediator.ViewportMediator", {
                 direction = this.getSlideRightTransition();
                 break;
 
-            // TODO: constant
             case CafeTownsend.event.NavigationEvent.ACTION_SHOW_EMPLOYEE_DETAIL:
                 view = this.getEmployeeDetailView();
                 direction = this.getSlideLeftTransition();
                 break;
 
-            // TODO: constant
             case CafeTownsend.event.NavigationEvent.ACTION_BACK_SHOW_EMPLOYEE_LIST:
                 view = this.getEmployeeListView();
                 direction = this.getSlideRightTransition();
@@ -87,7 +86,7 @@ Ext.define("CafeTownsend.controller.mediator.ViewportMediator", {
     ////////////////////////////////////////////////
 
     /**
-     * TODO
+     * Handles the navigation applicaiton event and passes on the action to a functional, testable method.
      */
     onNavigate: function(event) {
         console.log("ViewportMediator.onNavigate");

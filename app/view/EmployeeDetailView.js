@@ -1,5 +1,10 @@
 /**
  * The employee details view for the application.
+ *
+ * <p>
+ * All views are purely layout and don't contain event handling,
+ * application or business logic; this is all done in the view's corresponding mediator.
+ * </p>
  */
 Ext.define("CafeTownsend.view.EmployeeDetailView", {
     extend: "Ext.form.Panel",

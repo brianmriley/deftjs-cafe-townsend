@@ -11,6 +11,7 @@
  * TODO: BMR: 02/02/13: Add unit tests.
  * TODO: BMR: 02/22/13: Add localization.
  * TODO: BMR: 02/25/13: Wrap the store for CRUD methods.
+ * TODO: BMR: 02/25/13: AsyncToken for unique service calls so success/fault handlers are based on unique call and not overwritten..
  */
 Ext.Loader.setConfig({
     enabled: true,

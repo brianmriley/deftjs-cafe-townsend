@@ -1,6 +1,11 @@
 /**
  * The list of employees view for the application.
  *
+ * <p>
+ * All views are purely layout and don't contain event handling,
+ * application or business logic; this is all done in the view's corresponding mediator.
+ * </p>
+ *
  *  TODO: BMR: 02/22/13: Add support for search. The search input isn't currently in the view.
  */
 Ext.define("CafeTownsend.view.EmployeeListView", {
