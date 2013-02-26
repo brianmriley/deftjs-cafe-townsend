@@ -18,9 +18,10 @@ Ext.define("CafeTownsend.event.NavigationEvent", {
     direction: "",
 
     /**
-     * Constructor. Allows the username and password for authentication to be set on the event.
      *
-     * TODO
+     * @param type          The event type.
+     * @param action        The string action that maps to the navigation.
+     * @param direction     An optional direction property for navigation.
      */
     constructor: function(type, action, direction) {
         this.callParent(arguments);

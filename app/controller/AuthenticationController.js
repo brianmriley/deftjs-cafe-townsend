@@ -1,10 +1,6 @@
 /**
- * The AuthenticationController acts as the command with asynchronous callback methods for successful
+ * The AuthenticationController acts like a service controller with asynchronous callback methods for successful
  * and failed authentication service calls.
- *
- * TODO: BMR: 01/15/13: Extending Deft.mvc.ViewController blows up and throws the following errors
- * 1)  Error: Error while resolving value to inject: no dependency provider found for "function() { return this.constructor.apply(this, arguments); }".
- * 2)  TypeError: "undefined" is not a function(evaluating "controller.getStores()")
  */
 Ext.define("CafeTownsend.controller.AuthenticationController", {
     extend: "SenchaExtensions.mvc.controller.AbstractController",
@@ -16,14 +12,21 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
 
     inject: [
         "authenticationService",
-        "employeeStore"
+        "employeeStore",
+        "authenticationServiceClass"
     ],
 
     config: {
-        // create a public property so we can inject our service
+        /**
+         * @cfg {Object} authenticationService The injected authentication service from DeftJS.
+         * @accessor
+         */
         authenticationService: null,
 
-        // create a public property so we can inject our store
+        /**
+         * @cfg {Object} employeeStore The injected employee store from DeftJS.
+         * @accessor
+         */
         employeeStore: null
     },
 
@@ -49,11 +52,16 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
     login: function(username, password) {
         console.log("AuthenticationController.login: username = " + username + ", password = " + password);
 
-        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.loginSuccess, this.loginFailure, this);
-        var service = this.getAuthenticationService();
+        // NOTE: You can set up the service call either using the longhand way where you need to know about the
+        // use of the Responder object or you can use the framework method that does this behind the scenes: executeServiceCall()
+//        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.loginSuccess, this.loginFailure, this);
+//        var service = this.getAuthenticationService();
+//
+//        service.setResponder(responder);
+//        service.authenticate(username, password);
 
-        service.setResponder(responder);
-        service.authenticate(username, password);
+        var service = this.getAuthenticationService();
+        this.executeServiceCall(service, service.authenticate, [username, password], this.loginSuccess, this.loginFailure, this);
     },
 
     /**
@@ -69,9 +77,11 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
 
         service.setResponder(responder);
         service.logout();
-
     },
 
+    /**
+     * Resets the session data.
+     */
     resetSessionData: function() {
         console.info("AuthenticationController.resetSessionData");
 
@@ -84,11 +94,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
     ////////////////////////////////////////////////
 
     /**
-     * Handles the successful service call and takes the response data packet as a parameter.
-     *
-     * <p>
-     * Inspects the response for success and fires off the corresponding success event.
-     * </p>
+     * Handles the successful login service call and takes the response data packet as a parameter.
+     * Fires off the corresponding success event on the application-level event bus.
      *
      * @param response  The response data packet from the successful service call.
      */
@@ -103,11 +110,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
     },
 
     /**
-     * Handles the failed service call and takes the response data packet as a parameter.
-     *
-     * <p>
-     * Fires off the corresponding fault event.
-     * </p>
+     * Handles the failed login service call and takes the response data packet as a parameter.
+     * Fires off the corresponding failure event on the application-level event bus.
      *
      * @param response  The response data packet from the failed service call.
      */
@@ -121,11 +125,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
     },
 
     /**
-     * Handles the successful service call and takes the response data packet as a parameter.
-     *
-     * <p>
-     * Inspects the response for success and fires off the corresponding success event.
-     * </p>
+     * Handles the successful logout service call and takes the response data packet as a parameter.
+     * Fires off the corresponding success event on the application-level event bus. Resets the session data.
      *
      * @param response  The response data packet from the successful service call.
      */
@@ -139,11 +140,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
     },
 
     /**
-     * Handles the failed service call and takes the response data packet as a parameter.
-     *
-     * <p>
-     * Fires off the corresponding fault event.
-     * </p>
+     * Handles the failed logout service call and takes the response data packet as a parameter.
+     * Fires off the corresponding failure event on the application-level event bus.
      *
      * @param response  The response data packet from the failed service call.
      */

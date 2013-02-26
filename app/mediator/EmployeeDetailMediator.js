@@ -55,7 +55,8 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
     },
 
     /**
-     * TODO
+     * Functional method to save an employee. Determines if the employee is new and it needs to be
+     * created, or existing and needs to be updated and fires off the corresponding application-level event.
      *
      * @param employee    The employee is the data model for the item in the list currently selected.
      */
@@ -88,7 +89,7 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
     },
 
     /**
-     * TODO
+     * Functional method to delete an employee. Fires off the corresponding application-level event.
      *
      * @param employee    The employee is the data model for the item in the list currently selected.
      */
@@ -109,6 +110,9 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
         }
     },
 
+    /**
+     * Simple navigation method used to navigate back to the employee list view.
+     */
     backToEmployeeList: function() {
         console.log("EmployeeDetailMediator.backToEmployeeList");
 
@@ -120,9 +124,9 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
     ////////////////////////////////////////////////
 
     /**
-     * Handles the get employees success event from the login controller.
+     * Handles the create employee success application-level event. Navigates back to the employee list view.
      */
-    onCreateEmployeeSuccess: function () {
+    onCreateEmployeeSuccess: function() {
         console.log("EmployeeDetailMediator.onCreateEmployeeSuccess");
 
         this.getEmployeeDetailView().setMasked(false);
@@ -130,9 +134,9 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
     },
 
     /**
-     * Handles the get employees failure event from the login controller.
+     * Handles the update employee success application-level event. Navigates back to the employee list view.
      */
-    onUpdateEmployeeSuccess: function () {
+    onUpdateEmployeeSuccess: function() {
         console.log("EmployeeDetailMediator.onUpdateEmployeeFailure");
 
         this.getEmployeeDetailView().setMasked(false);
@@ -140,9 +144,9 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
     },
 
     /**
-     * Handles the get employees failure event from the login controller.
+     * Handles the delete employee success application-level event. Navigates back to the employee list view.
      */
-    onDeleteEmployeeSuccess: function () {
+    onDeleteEmployeeSuccess: function() {
         console.log("EmployeeDetailMediator.onDeleteEmployeeSuccess");
 
         this.getEmployeeDetailView().setMasked(false);
@@ -154,7 +158,7 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
     ////////////////////////////////////////////////
 
     /**
-     * TODO
+     * Handles the back button tap event. Navigates back to the employee list view.
      */
     onBackButtonTap: function() {
         console.log("EmployeeDetailMediator.onBackButtonTap");
@@ -163,7 +167,8 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
     },
 
     /**
-     * TODO
+     * Handles the save button tap event. Grabs the view's current employee data and passes the record
+     * to the functional save method.
      */
     onSaveEmployeeButtonTap: function() {
         console.log("EmployeeDetailMediator.onSaveEmployeeButtonTap");
@@ -180,7 +185,8 @@ Ext.define("CafeTownsend.mediator.EmployeeDetailMediator", {
     },
 
     /**
-     * TODO
+     * Handles the delete button tap event. Grabs the view's current employee data and passes the record
+     * to the functional delete method.
      */
     onDeleteButtonTap: function() {
         console.log("EmployeeDetailMediator.onDeleteButtonTap");

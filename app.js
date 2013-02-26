@@ -32,6 +32,7 @@ Ext.syncRequire([
 Ext.onReady(function () {
     console.log("app.onReady");
 
+    // pull all of this in so they can be injected
     Ext.syncRequire([
         "CafeTownsend.service.AuthenticationService",
         "CafeTownsend.service.mock.AuthenticationServiceMock",
@@ -41,6 +42,10 @@ Ext.onReady(function () {
 
     // Configure the DeftJS IoC container
     Deft.Injector.configure({
+
+        authenticationServiceClass: {
+            value: Ext.ClassManager.get("CafeTownsend.service.mock.AuthenticationServiceMock")
+        },
 
         ////////////////////////////////////////////
         // IMPL

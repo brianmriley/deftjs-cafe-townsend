@@ -49,14 +49,6 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
     },
 
     /**
-     * Initializes the view mediator and sets up global event bus handlers.
-     */
-    init: function() {
-        this.callParent();
-        console.log("EmployeeListMediator.init");
-    },
-
-    /**
      * Sets up global event bus handlers. Called by the parent superclass during the initialization phase.
      */
     setupGlobalEventListeners: function() {
@@ -112,10 +104,10 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
     ////////////////////////////////////////////////
 
     /**
-     * Handles the login success event from the login controller. Slide the employee list view
+     * Handles the login success application-level event. Slide the employee list view
      * onto stage.
      */
-    onLoginSuccess: function () {
+    onLoginSuccess: function() {
         console.log("EmployeeListMediator.onLoginSuccess");
 
         this.navigate(CafeTownsend.event.AuthenticationEvent.LOGIN_SUCCESS);
@@ -124,9 +116,9 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
     },
 
     /**
-     * Handles the get employees success event from the login controller.
+     * Handles the get employees application-level event.
      */
-    onGetEmployeeListSuccess: function () {
+    onGetEmployeeListSuccess: function() {
         console.log("EmployeeListMediator.onGetEmployeeListSuccess");
 
         this.getEmployeeListView().setMasked(false);
@@ -136,7 +128,7 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
     /**
      * Handles the get employees failure event from the login controller.
      */
-    onGetEmployeeListFailure: function () {
+    onGetEmployeeListFailure: function() {
         console.log("EmployeeListMediator.onGetEmployeeListFailure");
 
         this.getEmployeeListView().setMasked(false);

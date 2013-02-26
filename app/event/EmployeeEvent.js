@@ -26,13 +26,22 @@ Ext.define("CafeTownsend.event.EmployeeEvent", {
         DELETE_EMPLOYEE_FAILURE:    "CafeTownsend.event.EmployeeEvent.DELETE_EMPLOYEE_FAILURE"
     },
 
+    /**
+     * The id of an employee.
+     */
     id: "",
+
+    /**
+     * An employee to perform CRUD actions on.
+     */
     employee: null,
 
     /**
      * Constructor. Allows the username and password for authentication to be set on the event.
      *
-     * @param id      The id of the employee the CRUD operation is acting on.
+     * @param type          The event type.
+     * @param id        The id of the employee the CRUD operation is acting on.
+     * @param employee  The employee the CRUD operation is acting on.
      */
     constructor: function(type, id, employee) {
         this.callParent(arguments);

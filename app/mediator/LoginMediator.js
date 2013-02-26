@@ -115,7 +115,7 @@ Ext.define("CafeTownsend.mediator.LoginMediator", {
     /**
      * Handles the login success event from the login controller. Removes the loading mask from the view.
      */
-    onLoginSuccess: function () {
+    onLoginSuccess: function() {
         console.log("LoginMediator.onLoginSuccess");
 
         var view = this.getLoginView();
@@ -126,7 +126,7 @@ Ext.define("CafeTownsend.mediator.LoginMediator", {
      * Handles the logout success event from the logout controller. Slide the login view
      * onto stage.
      */
-    onLogoutSuccess: function () {
+    onLogoutSuccess: function() {
         console.log("LoginMediator.onLoginSuccess");
 
         var view = this.getLoginView();
@@ -139,7 +139,7 @@ Ext.define("CafeTownsend.mediator.LoginMediator", {
      * Handles the login failure event from the login controller. Removes the loading mask from the view.
      * Shows the faied login message.
      */
-    onLoginFailure: function () {
+    onLoginFailure: function() {
         console.log("LoginMediator.onLoginFailure");
 
         var view = this.getLoginView();
@@ -154,7 +154,7 @@ Ext.define("CafeTownsend.mediator.LoginMediator", {
 
     /**
      * Handles the simple tap event from the login view's submit button. Grabs the username and password
-     * and passes them to the testable login method if the login credentails are valid.
+     * and passes them to the testable login method if the login credentials are valid.
      *
      * @param event The tap event from the login button on the login view.
      */
