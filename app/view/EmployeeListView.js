@@ -46,11 +46,6 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
                     }
                 ]
             },
-//            {
-//                xtype: "searchfield" ,
-//                itemId:"searchInput",
-//                id:"searchInput"
-//            },
             {
                 xtype: "list",
                 itemId: "list",
@@ -59,7 +54,24 @@ Ext.define("CafeTownsend.view.EmployeeListView", {
                 loadingText: "Loading Employees...",
                 emptyText: "No Employees found.",
                 grouped: true,
-                onItemDisclosure: true
+                onItemDisclosure: true,
+
+                items: [
+                    {
+                        xtype: "titlebar" ,
+                        itemId:"titlebar",
+                        id:"titlebar",
+                        docked: 'top',
+
+                        items: [
+                            {
+                                xtype: "searchfield" ,
+                                itemId:"searchInput",
+                                id:"searchInput"
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }

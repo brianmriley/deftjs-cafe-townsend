@@ -14,9 +14,9 @@ This project's basic idea was pulled from [CafeTownsend AngularJS port by Thomas
 This port demonstrates the following:
 
 *  Application-Level event bus communication
-*  Dependency injection for services and stores
+*  Dependency injection of services and stores using DeftJS
 *  Separation-of-concerns for Model-View-Controller-Service
-*  Services as mocks and real HTTP  data services
+*  Services as mocks and real HTTP data services
 *  Rigorous elimination of logic from View code using Mediators
 *  Session Management/Authentication
 *  Lazy loading of data services (*with auto-jsonify of external JSON data*)
@@ -55,11 +55,11 @@ TBD
 
 This effort is still ongoing with some in-progress effort that will provide the following features:
 
-*  Add support for multiple responders to 1 service
-*  Add support for dynamic view to mediator wiring
-*  Refactor application-level event bus into an IoC managed object
-*  Lazy loading of views on demand
-*  Better DeftJS support so all dependencies are lazy loaded as opposed to at startup
-*  Localization
-*  Unit Tests
-*  Build Support
+*  Add support for multiple responders to 1 service - Sencha MVC Ext
+*  Add support for dynamic view to mediator wiring - Sencha MVC Ext
+*  Refactor application-level event bus into an IoC managed object - Sencha MVC Ext
+*  Lazy loading of views on demand - CafeTownsend
+*  Better DeftJS support so all dependencies are lazy loaded as opposed to at startup - CafeTownsend
+*  Localization - CafeTownsend
+*  Unit Tests - CafeTownsend
+*  Build Support - CafeTownsend

@@ -14,7 +14,10 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
 
     config: {
 
-        // create a public property so we can inject our store
+        /**
+         * @cfg {Ext.data.Store} employeeStore The injected employee store service from DeftJS.
+         * @accessor
+         */
         employeeStore: null,
 
         // create references to this mediator's views so we can listen to events and grab data from them
@@ -139,7 +142,7 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
     ////////////////////////////////////////////////
 
     /**
-     * TODO
+     * Handles the tap of the logout button. Dispatches the logout application-level event.
      */
     onLogoutButtonTap: function() {
         console.log("EmployeeListMediator.onLogoutButtonTap");
@@ -149,7 +152,7 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
     },
 
     /**
-     * TODO
+     * Handles the tap of the new employee button. Shows the employee detail view.
      */
     onNewEmployeeButtonTap: function() {
         console.log("EmployeeListMediator.onNewEmployeeButtonTap");
@@ -158,38 +161,39 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
     },
 
     /**
-     * TODO:
+     * Handles the list disclose of an employee list item. Shows the employee detail view passing in a reference to
+     * the selected item in the list.
      *
-     * @param list
-     * @param record
-     * @param target
-     * @param index
-     * @param evt
-     * @param options
+     * @param {Ext.dataview.List} list  Reference to the visual list component.
+     * @param {Object/Ext.data.Model} record Reference to the selected item in the list.
+     * @param {Object} target The item in the list that's selected.
+     * @param {Integer} index The index of the selected item.
+     * @param {Object/Event} evt the event that triggered the handler.
+     * @param {Object} options ???
      */
-    onListDisclose: function (list, record, target, index, evt, options) {
+    onListDisclose: function(list, record, target, index, evt, options) {
         console.log("EmployeeListMediator.onListDisclose");
 
         this.showEmployeeDetail(record);
     },
 
     /**
-     * TODO
+     * Handles the key up event on the search field. Filters the list component's store by the value in the
+     * search field and determining if it matches the first or last name elements of each record in the list.
      *
-     * @param field
+     * @param {Ext.field.Search} field Reference to the search field.
      */
     onSearchKeyUp: function(field) {
         console.log("EmployeeListMediator.onSearchKeyUp");
 
         //get the store and the value of the field
-        var value = field.getValue(),
-            store = this.getList().getStore();
+        var value = field.getValue();
+        var store = this.getList().getStore();
 
-        //first clear any current filters on thes tore
+        //first clear any current filters on the store
         store.clearFilter();
 
-
-        //check if a value is set first, as if it isnt we dont have to do anything
+        //check if a value is set first, as if it isn't we don't have to do anything
         if (value) {
             //the user could have entered spaces, so we must split them so we can loop through them all
             var searches = value.split(' '),
@@ -210,14 +214,15 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
 
             //now filter the store by passing a method
             //the passed method will be called for each record in the store
-            store.filter(function (record) {
+            store.filter(function(record) {
                 var matched = [];
 
 
                 //loop through each of the regular expressions
                 for (i = 0; i < regexps.length; i++) {
                     var search = regexps[i],
-                        didMatch = record.get('name').match(search) ;
+                        didMatch = record.get('firstName').match(search) ||
+                            record.get('lastName').match(search);
 
 
                     //if it matched the first or last name, push it into the matches array

@@ -14,6 +14,7 @@
  * TODO: BMR: 02/22/13: Add support for unique mediator instance (non-singleton) to view mapping with; bake the view into this class automatically; add support for dynamic view to mediator wiring;
  * TODO: BMR: 02/25/13: Add support for multiple responders to 1 service. AsyncToken for unique service calls so success/fault handlers are based on unique call and not overwritten.
  * TODO: BMR: 02/26/13: Build support.
+ * TODO: BMR: 02/27/13: Refactor application-level event bus to it's own object; move out of base controller.
  */
 Ext.Loader.setConfig({
     enabled: true,
