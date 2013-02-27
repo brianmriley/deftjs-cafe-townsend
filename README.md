@@ -14,9 +14,9 @@ This project's basic idea was pulled from [CafeTownsend AngularJS port by Thomas
 This port demonstrates the following:
 
 *  Application-Level event bus communication
-*  Demonstrates dependency injection for services and stores
-*  Demonstrates separation-of-concerns for Model-View-Controller-Service
-*  Demonstrates services as mocks and real HTTP  data services
+*  Dependency injection for services and stores
+*  Separation-of-concerns for Model-View-Controller-Service
+*  Services as mocks and real HTTP  data services
 *  Rigorous elimination of logic from View code using Mediators
 *  Session Management/Authentication
 *  Lazy loading of data services (*with auto-jsonify of external JSON data*)
