@@ -42,7 +42,8 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
             },
 
             searchInput :{
-                keyup: "onSearchKeyUp"
+                keyup:          "onSearchKeyUp",
+                clearicontap:   "onSearchClearIconTap"
             },
 
             list: {
@@ -175,6 +176,16 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
         console.log("EmployeeListMediator.onListDisclose");
 
         this.showEmployeeDetail(record);
+    },
+
+    /**
+     * Handles the clear icon tap event on the search field. Clears all filter on the list's store.
+     */
+    onSearchClearIconTap: function() {
+        console.log("EmployeeListMediator.onSearchClearIconTap");
+
+        var store = this.getList().getStore();
+        store.clearFilter();
     },
 
     /**
