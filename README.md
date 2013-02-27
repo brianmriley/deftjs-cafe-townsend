@@ -1,129 +1,63 @@
-# CafeTownsend - Sencha Touch & DeftJS
+# CafeTownsend - Sencha Touch, DeftJS, WASI Sencha Extensions
 
 <br/>
-This project is an HTML5/Javascript implementation of the infamous CafeTownsend application. CafeTownsend is a well known application created to demonstrate various MVC frameworks using Flex or ActionScript. There are known ports using Cairngorm, Mate, PureMVC, Spring ActionScript, RobotLegs and Swiz.
+This project is an HTML5/Javascript implementation of the infamous CafeTownsend application. CafeTownsend is a well known application created to demonstrate various MVC frameworks using Flex or ActionScript. There are known ports using Cairngorm, Mate, PureMVC, Spring ActionScript, RobotLegs and Swiz. This implementation uses Sencha Touch, DeftJS, and the WASI Sencha MVC Extensions:
 
-Recently a developer contributed an HTML5 port of the application using the javascript [Spine](http://spinejs.com/) MVC framework.
+*  [Sencha Touch - Robust HTML5/JavaScript Framework for Mobile Applications](http://www.sencha.com/products/touch)
+*  [DeftJS - DeftJS enhances Sencha's ExtJS and Sencha Touch APIs with additional building blocks that enable large development teams to rapidly create enterprise-scale applications, leveraging best practices and proven patterns discovered by top RIA developers at some of the best consulting firms in the industry.](https://github.com/deftjs/)
+*  [WASI Sencha MVC Extensions - Additional foundational building blocks, infrastructure, and boilerplate code for building Sencha MVC applications](http://www.sencha.com/products/touch)
 
-*  [CafeTownsend - Javascript with AngularJS Ioc]()      … blog pending.
-*  [CafeTownsend - Javascript with SpineJS MVC](http://www.websector.de/blog/2011/12/31/spine-js-cafe-townsend-example/)
-*  [CafeTownsend - Flex with Swiz IoC](http://www.gridlinked.info/swiz-localization-l10n-logging/)
-*  [CafeTownsend - Flex with Mate MVC](http://www.websector.de/blog/2010/03/12/mate-cafe-townsend-example-updated-for-using-flex-4/)
-
-
-This project contributes a superior port of the HTML5 CafeTownsend application;using the [Angular.js IoC](http://angularjs.org/) framework.
-
-
-![Screenshot](https://github.com/ThomasBurleson/angularJS-CafeTownsend/raw/master/app/assets/images/screens.png)<br/>
-
-
-Click to play with the live [CafeTownsend Demo](http://thomasburleson.github.com/cafetownsend/index.html).
-
-
+This project's basic idea was pulled from [CafeTownsend AngularJS port by Thomas Burleson](https://github.com/ThomasBurleson/angularJS-CafeTownsend) and the [Sencha Touch Note editor by Jorge Ramon](http://miamicoder.com/2012/how-to-create-a-sencha-touch-2-app-part-5/), but modified in architecture and design to closely align with a typical Flex-based MVC application using Swiz or Parsley. The impetus for this was simple: with enterprises not wanting to move forward with new Flex applications, how do you take the existing skills based on common design patterns and infrastructure and apply them to the HTML5/JavaScript RIA? How do you get a team of Flex developers up and running quickly? Simple, show them a framework and architecture that looks almost identical to what they already know, but in a JavaScript implementation.
 
 ---
 
-AngularJS is an amazing IoC MVVM framework for Javascript applications. Supporting pageless architectures, advanced data binding, HTML templating, and dependency injection… AngularJS is strikingly similar to the Flex [Swiz IoC framework](http://swizframework.org/).
+This port demonstrates the following:
 
-
-Note: Subsequent CSS version will be rewritten in [{Less}](http://lesscss.org/) for dynamic stylesheet language support. <br/>
-The AngularJS port also demonstrates significant advantages over the SpineJS implementation:
-
-*  Pageless Architecture
-*  Improved routing with `deep link` support
-*  Significant reduction in HTML template fragments
-*  Rigorous elimination of Javascript code from HTML
-*  Inter-controller data sharing
+*  Application-Level event bus communication
+*  Demonstrates `dependency injection` for services and stores
+*  Demonstrates `separation-of-concerns` for Model-View-Controller-Service
+*  Demonstrates services as mocks and real HTTP  data services
+*  Rigorous elimination of logic from View code using Mediators
 *  Session Management/Authentication
 *  Lazy loading of data services (*with auto-jsonify of external JSON data*)
 *  Code versions handwritten in Javascript
-*  Demonstrates `separation-of-concerns` for Model-Views-Controllers
-*  Demonstates `dependency injection` for services and Controllers
-*  Demonstrates best practices for `Model-View-View-Model (MVVM)` architectures
-
 
 
 ## Directory Layout
 
-    app/                  --> all of the files to be used in production
+    app.js                  --> the main application setup and creation
+    index.html              --> contains the bootstrapping and basic styling for the entire app
 
-      CafeTownsend.html   --> application file (the main html template file of the app)
+    app/                    --> contains sencha mvc infrastructure
 
-	    assets/
+        controller/         --> application, service controllers
+        event/              --> application-level events used with event bus
+        mediator/           --> view mediators that fullfil the passive view pattern
+        model/              --> domain models
+        service/            --> concrete http service implementations
+            mock/           --> mock http services
+        store/              --> data stores containing lists of models
+        view/               --> views or screens for the application
 
-        css/              --> css files
-          styles.css      --> default stylesheet
 
-        images/           --> image files
+    lib/                    --> contains all 3rd party libraries
+        deft-08.8/          --> the current deftjs library
+        wasi-sencha-ext/    --> wasi sencha mvc extensions
 
-        tmpl/         --> angular view partials (partial html templates)
-          login.html
-          employees.html
-          employee_edit.html
-
-        data/
-          members.json      --> external, simple JSON data
-
-        js/
-          CafeTownsend.js --> application source code
-          bootstrap.js    --> asynch loader and initializer (using head.js)
-
-          lib/
-            /angular
-                angular.js      --> AngularJS v0.10.5 IoC Framework
-
-            jquery.min.js       --> jQuery v1.7 minified
-            head.load.min.js    --> asynch script loader
-            namespace.min.js    --> namespace support for `package` class organization
-            uuid.js             --> uuid generator
-    src/
-      Cakefile              --> cake build script
-
-      coffee/			          --> master developer files for service & controller classe
-        bootstrap.coffee  	--> asynch loader and initializer (using head.js)
-
-		    mindspace/cafetownsend/
-            CafeTownsendApp.coffee --> application class to establish routes and session
-
-      			controller/
-      				SessionController.coffee
-      				LoginController.coffee
-      				EmployeeController.coffee
-      				EmployeeEditController.coffee
-
-      			service/
-      				EmployeeManager.coffee
-      				SessionService.coffee
-
-      	  	com/mindspace/angular/
-        			directive/
-        				EventDirectives.coffee   --> doubleClick, focuse directives
-
-    scripts/              --> handy shell/js/ruby scripts
-      web-server.js       --> simple development webserver based on node.js
+    data/                   --> contains json data for mocking service calls
 
 
 ## Build Notes
 
-
-Developers should use the cake script to build, consolidate, and minify the custom Javascript into Cafetownsend.min.js
-
-    cd ./src; cake build;
-
-*  CafeTownsend.js - consolidate application code
-*  bootstrap.js    - asynch loader and initializer (using head.js)
+TBD
 
 ## Pending Features
 
 This effort is still ongoing with some in-progress effort that will provide the following features:
 
-*  Provide `loading indicator` as data load indicator
-*  Support deep linking with synch data loads
-*  Convert disorganized CSS to LESS
-*  Build CafeTownsend Tests/Scenarios
-*  Create view slide transitions
-
-## Contact
-
-Stay tuned for upcoming blog article and video on the [GridLinked](http://www.gridlinked.info) blog.<br/>
-For more information on angular please check out http://angularjs.org/
+*  Add support for multiple responders to 1 service
+*  Add support for dynamic view to mediator wiring
+*  Refactor application-level event bus into an IoC managed object
+*  Localization
+*  Unit Tests
+*  Build Support
