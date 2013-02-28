@@ -115,9 +115,9 @@ TBD
 
 This effort is still ongoing with some in-progress effort that will provide the following features:
 
-*  Add support for multiple responders to 1 service - Sencha MVC Ext
-*  Add support for dynamic view to mediator wiring - Sencha MVC Ext
-*  Refactor application-level event bus into an IoC managed object - Sencha MVC Ext
+*  Add support for multiple responders to 1 service - Sencha MVC Extenstions
+*  Add support for dynamic view to mediator wiring - Sencha MVC Extenstions
+*  Refactor application-level event bus into an IoC managed object - Sencha MVC Extenstions
 *  Lazy loading of views on demand - CafeTownsend
 *  Better DeftJS support so all dependencies are lazy loaded as opposed to at startup - CafeTownsend
 *  Localization - CafeTownsend
