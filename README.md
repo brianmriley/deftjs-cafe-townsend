@@ -72,7 +72,16 @@ service. When a service succeeds or fails, it is the controller's responsibility
 (applicaiton state) and dispatch events alerting the rest of the applicaiton to the state of a service call.
 
 In addition, controllers can be used to handle applicaiton-level processes and logic as they are in fact applicaiton
-aware and often "control" the flow and orchestrtion of the application.
+aware and often "control" the flow and orchestration of the application.
+
+### Events
+TBD...Vessels for application-level events.
+
+### Services
+TBD
+
+### Models & Stores
+TBD
 
 # Directory Layout
 
