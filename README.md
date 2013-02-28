@@ -73,6 +73,13 @@ to it's events. In order to facilitate a separation of concerns between an objec
 and an object that's responsible for executing services and working with model data (controllers), the mediators 
 simply broadcast events that controllers handle in order to execute services.
 
+The following example illustrates a mediator dispatching an application-level login event:
+
+```js
+var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGIN, username, password);
+this.dispatchGlobalEvent(evt);
+```
+
 Simply put, while application aware, mediators numero uno role is to manage it's specific view buddy.
 
 ### Controllers
@@ -80,11 +87,41 @@ Controllers act as the front door to services; they handle application-level eve
 service. When a service succeeds or fails, it is the controller's responsibility to update model and store data
 (application state) and dispatch events alerting the rest of the application to the state of a service call.
 
+The following example illustrates a controller listening to and handling an application-level login event:
+
+```js
+/**
+ * Sets up global event bus handlers.
+ */
+setupGlobalEventListeners: function() {
+    this.callParent();
+    console.log("AuthenticationController.setupGlobalEventListeners");
+
+    this.addGlobalEventListener(CafeTownsend.event.AuthenticationEvent.LOGIN, this.onLogin, this);
+},
+
+/**
+ * Handles the login event on the application-level event bus. Grabs the username and password
+ * and calls a functional method that's more testable than this event handler.
+ *
+ * @param {CafeTownsend.event.AuthenticationEvent} event Reference to the login event. Contains the username and password.
+ */
+onLogin: function(event) {
+    var username = event.username;
+    var password = event.password;
+    console.log("AuthenticationController.onLogin: username = %s, password = %s", username, password);
+
+    this.login(username, password);
+},
+```
+
 In addition, controllers can be used to handle application-level processes and logic as they are in fact application
 aware and often "control" the flow and orchestration of the application.
 
 ### Events
-TBD...Vessels for application-level events.
+Events are self-contained vessels for transporting data and expressing message actions on the application-level
+event bus. The event type is a string constant withing the event class implementation and indicates the mapping
+or event type to handle when subscribing or listening to application-level events.
 
 ### Services
 TBD
