@@ -15,7 +15,7 @@ This application's basic concepts, UI, and use cases were pulled from a combinat
 and the [Sencha Touch Note editor by Jorge Ramon](http://miamicoder.com/2012/how-to-create-a-sencha-touch-2-app-part-5/), 
 but modified in architecture and design to closely align with a typical Flex-based MVC application using Swiz or Parsley. 
 
-## The impetus for this was simple...
+The impetus for this was simple...
 
 First, with enterprises hesitant to move forward with new Flex applications, 
 how do you take your existing Flex & ActionScript expertise and apply them to the HTML5/JavaScript RIA? 
@@ -43,15 +43,21 @@ This port demonstrates the following:
 # MVCS Architecture
 
 Since Sencha ExtJS and Sencha Touch are based on the same core libraries, the MVC architecture was designed with
-reusability and portability in mind for applications that need to co-exist 
+reusability and portability in mind for applications that need to co-exist on the desktop and mobile platforms without 
+writing 100% unique code bases for each. For the most part, views and their mediators need to be specific to their 
+platform, whereas the applicaiton and business logic should be reusable by all.
 
 ### Views
 Views are used eclusively for UI layout using Sencha components. There's no logic, event handling, or data marshalling
-of any kind in the views -- they are "dumb" and simply display whatever they're given from their accompanying mediator.
+of any kind in the views -- they are "dumb" and simply display whatever they're given or instructed to do from their accompanying mediator.
+It is expedcted that views will need to be partly or entirely created from scratch for each platform. 
 
 ### Mediators
 Mediators fullfil the passive view pattern and are entirely responsible for a single view and it's subcomponents; 
-it is within a mediator that we handle event logic, events and user interactions, and data marshalling.
+it is within a mediator that we handle view logic, events and user interactions, and data marshalling. It is expected 
+that mediators will need to be partly or entirely created from scratch for each platform. It may also be possible
+to create base mediators for some desktop and mobile views for additional reusability, leaving the specifics
+to the concrete, platform implementations.
 
 # Directory Layout
 
