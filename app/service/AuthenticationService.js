@@ -16,20 +16,16 @@
  */
 
 /**
- * The authentication service object.
+ * The authentication service object. Contains concrete Ajax calls.
  */
 Ext.define("CafeTownsend.service.AuthenticationService", {
     extend: "SenchaExtensions.mvc.service.AbstractService",
-
-    config: {
-    },
 
     /**
      * The login ajax service call. Hits a json service and handles the success and fault accordingly.
      *
      * @param username      The username being authenticated.
      * @param password      The password being authenticated.
-     * @param responder     The responder (typically a controller) that handles the success and fault for the service.
      */
     authenticate: function(username, password) {
         console.log("AuthenticationService.authenticate: username = " + username + ", password = " + password);

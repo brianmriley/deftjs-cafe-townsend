@@ -179,7 +179,7 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
      * Handles the login event on the application-level event bus. Grabs the username and password
      * and calls a functional method that's more testable than this event handler.
      *
-     * @param event Reference to the login event. Contains the username and password.
+     * @param {CafeTownsend.event.AuthenticationEvent} event Reference to the login event. Contains the username and password.
      */
     onLogin: function(event) {
         var username = event.username;
@@ -193,7 +193,7 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
      * Handles the simple logout event on the application-level event bus and calls a functional method that's more
      * testable than this event handler.
      *
-     * @param event Reference to the logout event.
+     * @param @param {CafeTownsend.event.AuthenticationEvent} Reference to the logout event.
      */
     onLogout: function(event) {
         console.log("AuthenticationController.onLogout");

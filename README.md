@@ -113,9 +113,38 @@ onLogin: function(event) {
 
     this.login(username, password);
 },
+
+/**
+ * Handles the successful login service call and takes the response data packet as a parameter.
+ * Fires off the corresponding success event on the application-level event bus.
+ *
+ * @param {Object} response  The response data packet from the successful service call.
+ */
+loginSuccess: function(response) {
+    console.info("AuthenticationController.loginSuccess");
+
+    // The server will send a token that can be used throughout the app to confirm that the user is authenticated.
+    this.setSessionToken(response.sessionToken);
+
+    var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGIN_SUCCESS);
+    this.dispatchGlobalEvent(evt);
+},
 ```
 
-In addition, controllers can be used to handle application-level processes and logic as they are in fact application
+In addition, controllers are used to execute services. The pattern to execute service call was borrowed
+from the [Swiz ServiceHelper.executeServiceCall() implementation](http://swizframework.jira.com/wiki/display/SWIZ/Service+Layer) as it cleanly calls the service and adds custom success and failure handlers in one
+line:
+
+```js
+// get a reference to the injected service
+var service = this.getAuthenticationService();
+this.executeServiceCall(service, service.authenticate, [username, password], this.loginSuccess, this.loginFailure, this);
+```
+
+It's currently defined in the base controller, but could easily be refactored into an injectable ServiceHelper bean
+like Swiz.
+
+Finally, controllers can be used to handle application-level processes and logic as they are in fact application
 aware and often "control" the flow and orchestration of the application.
 
 ### Events
@@ -124,10 +153,13 @@ event bus. The event type is a string constant withing the event class implement
 or event type to handle when subscribing or listening to application-level events.
 
 ### Services
-TBD
+Services are used to communicate with external APIs or data sources outside the application; these can be, but are
+not limited to, Ajax, REST, or LocalStorage data services. services are typically DeftJS managed beans and are injected into
+controllers. For development purposes, they often have mock and real, concrete implementations.
 
 ### Models & Stores
-TBD
+The models and stores are the client-side domain models and collections of domain models. They are often created, updated,
+and destroyed by controllers and used by mediators to marshall data for their respective views.
 
 # Directory Layout
 
