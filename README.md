@@ -1,15 +1,33 @@
-# CafeTownsend - Sencha Touch, DeftJS, WASI Sencha Extensions
+# CafeTownsend
 
-<br/>
+### Sencha Touch, DeftJS, & WASI Sencha Extensions
+
 This project is an HTML5/Javascript implementation of the infamous CafeTownsend application. CafeTownsend is a well known application created to demonstrate various MVC frameworks using Flex or ActionScript. There are known ports using Cairngorm, Mate, PureMVC, Spring ActionScript, RobotLegs and Swiz. This implementation uses Sencha Touch, DeftJS, and the WASI Sencha MVC Extensions:
 
 *  [Sencha Touch](http://www.sencha.com/products/touch) - Robust HTML5/JavaScript Framework for Mobile Applications
 *  [DeftJS](https://github.com/deftjs/) - DeftJS enhances Sencha's ExtJS and Sencha Touch APIs with additional building blocks that enable large development teams to rapidly create enterprise-scale applications, leveraging best practices and proven patterns discovered by top RIA developers at some of the best consulting firms in the industry.
-*  WASI Sencha MVC Extensions - Additional foundational building blocks, infrastructure, and boilerplate code for building Sencha MVC applications. NOTE: Not currently in it's own project and part of this PoC at the moment.
+*  WASI Sencha MVC Extensions - Additional foundational building blocks, infrastructure, and boilerplate code for building Sencha MVC applications. **NOTE**: Not currently in it's own project and part of this PoC at the moment.
 
-This project's basic idea was pulled from [CafeTownsend AngularJS port by Thomas Burleson](https://github.com/ThomasBurleson/angularJS-CafeTownsend) and the [Sencha Touch Note editor by Jorge Ramon](http://miamicoder.com/2012/how-to-create-a-sencha-touch-2-app-part-5/), but modified in architecture and design to closely align with a typical Flex-based MVC application using Swiz or Parsley. The impetus for this was simple: with enterprises not wanting to move forward with new Flex applications, how do you take the existing skills based on common design patterns and infrastructure and apply them to the HTML5/JavaScript RIA? How do you get a team of Flex developers up and running quickly? Simple, show them a framework and architecture that looks almost identical to what they already know, but in a JavaScript implementation.
+# Background 
 
----
+This application's basic concepts, UI, and use cases were pulled from a combination of
+[CafeTownsend AngularJS port by Thomas Burleson](https://github.com/ThomasBurleson/angularJS-CafeTownsend) 
+and the [Sencha Touch Note editor by Jorge Ramon](http://miamicoder.com/2012/how-to-create-a-sencha-touch-2-app-part-5/), 
+but modified in architecture and design to closely align with a typical Flex-based MVC application using Swiz or Parsley. 
+
+## The impetus for this was simple...
+
+First, with enterprises hesitant to move forward with new Flex applications, 
+how do you take your existing Flex & ActionScript expertise and apply them to the HTML5/JavaScript RIA? 
+How do development managers get their team of Flex developers up and running quickly in this space? Simple, 
+show them a framework and architecture that looks almost identical to what they already know, but in a JavaScript 
+implementation.
+
+Second, with a strong desire to create applicaitons for both the desktop and mobile platforms, how can we structure
+an applicaiton with as much resuabuility and portability in mind as possible; how do we decrese the amount of unique code 
+we need to write for both form factors and simply reuse the application and business logic?
+
+# Goals 
 
 This port demonstrates the following:
 
@@ -20,10 +38,22 @@ This port demonstrates the following:
 *  Rigorous elimination of logic from View code using Mediators
 *  Session Management/Authentication
 *  Lazy loading of data services (*with auto-jsonify of external JSON data*)
-*  Code versions handwritten in Javascript
+*  Code versions handwritten in Javascript with extensive class and method level comments
 
+# MVCS Architecture
 
-## Directory Layout
+Since Sencha ExtJS and Sencha Touch are based on the same core libraries, the MVC architecture was designed with
+reusability and portability in mind for applications that need to co-exist 
+
+### Views
+Views are used eclusively for UI layout using Sencha components. There's no logic, event handling, or data marshalling
+of any kind in the views -- they are "dumb" and simply display whatever they're given from their accompanying mediator.
+
+### Mediators
+Mediators fullfil the passive view pattern and are entirely responsible for a single view and it's subcomponents; 
+it is within a mediator that we handle event logic, events and user interactions, and data marshalling.
+
+# Directory Layout
 
     index.html              --> contains the bootstrapping and basic styling for the entire app
     app.js                  --> the main application setup and creation
@@ -34,10 +64,10 @@ This port demonstrates the following:
         event/              --> application-level events used with event bus
         mediator/           --> view mediators that fullfil the passive view pattern
         model/              --> domain models
-        service/            --> concrete http service implementations
-            mock/           --> mock http services
+        service/            --> concrete data service implementations
+            mock/           --> mock data services
         store/              --> data stores containing lists of models
-        view/               --> views or screens for the application
+        view/               --> ui views or screens for the application
 
 
     lib/                    --> contains all 3rd party libraries
