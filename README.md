@@ -59,6 +59,21 @@ that mediators will need to be partly or entirely created from scratch for each 
 to create base mediators for some desktop and mobile views for additional reusability, leaving the specifics
 to the concrete, platform implementations.
 
+Mediators are also aware of the applicaiton-level event bus and can thus partake in dispatching and listening 
+to it's events. In order to facilitate a separation of concerns between an object that manages a view (mediators) 
+and an object that's responsible for executing services and working with model data (controllers), the mediators 
+simply broadcast events that controllers handle in order to execute services.
+
+Simply put, while application aware, mediators numero uno role is to manage it's specific view buddy.
+
+### Controllers
+Controllers act as the front door to services; they handle application-level events and execute the appropriate 
+service. When a service succeeds or fails, it is the controller's responsibility to update model and store data
+(applicaiton state) and dispatch events alerting the rest of the applicaiton to the state of a service call.
+
+In addition, controllers can be used to handle applicaiton-level processes and logic as they are in fact applicaiton
+aware and often "control" the flow and orchestrtion of the application.
+
 # Directory Layout
 
     index.html              --> contains the bootstrapping and basic styling for the entire app
