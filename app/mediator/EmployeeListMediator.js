@@ -210,6 +210,8 @@ Ext.define("CafeTownsend.mediator.EmployeeListMediator", {
      * search field and determining if it matches the first or last name elements of each record in the list.
      *
      * @param {Ext.field.Search} field Reference to the search field.
+     *
+     * TODO: BMR: 02/28/13: clean this up. pulled directly from another example with minor changes: http://www.phs4j.com/2012/05/add-a-searchfield-to-a-sencha-touch-2-list-mvc/
      */
     onSearchKeyUp: function(field) {
         console.log("EmployeeListMediator.onSearchKeyUp");
