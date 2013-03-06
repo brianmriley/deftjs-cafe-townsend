@@ -22,7 +22,7 @@
  * different; eg, a login button on a desktop app could be click whereas mobile could be tap.
  */
 Ext.define("CafeTownsend.mediator.LoginMediator", {
-    extend: "SenchaExtensions.mvc.controller.mediator.AbstractMediator",
+    extend: "SenchaExtensions.mvc.mediator.AbstractMediator",
 
     requires: [
         "CafeTownsend.view.LoginView",
@@ -50,14 +50,6 @@ Ext.define("CafeTownsend.mediator.LoginMediator", {
     ////////////////////////////////////////////////
     // FUNCTIONAL METHODS
     ////////////////////////////////////////////////
-
-    /**
-     * Initializes the view mediator and sets up global event bus handlers.
-     */
-    init: function() {
-        this.callParent();
-        console.log("LoginMediator.init");
-    },
 
     /**
      * Sets up global event bus handlers. Called by the parent superclass during the initialization phase.
@@ -91,6 +83,7 @@ Ext.define("CafeTownsend.mediator.LoginMediator", {
 
         var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGIN, username, password);
         this.dispatchGlobalEvent(evt);
+//        this.appEventDispatcher.dispatchGlobalEvent(evt);
     },
 
     /**

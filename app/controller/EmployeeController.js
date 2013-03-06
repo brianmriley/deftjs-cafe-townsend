@@ -38,13 +38,13 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
          * @cfg {Object} employeeService The injected employee service from DeftJS.
          * @accessor
          */
-        employeeService: null,
+//        employeeService: null,
 
         /**
          * @cfg {Object} employeeStore The injected employee store from DeftJS.
          * @accessor
          */
-        employeeStore: null
+//        employeeStore: null
     },
 
     /**
@@ -69,7 +69,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         console.log("EmployeeController.getEmployeeList");
 
         var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.getEmployeeListSuccess, this.getEmployeeListFailure, this);
-        var service = this.getEmployeeService();
+        var service = this.employeeService;
+//        var service = this.getEmployeeService();
 
         service.setResponder(responder);
         service.getEmployeeList();
@@ -84,7 +85,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         console.log("EmployeeController.createEmployee");
 
         var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.createEmployeeSuccess, this.createEmployeeFailure, this);
-        var service = this.getEmployeeService();
+        var service = this.employeeService;
+//        var service = this.getEmployeeService();
 
         service.setResponder(responder);
         service.createEmployee(employee);
@@ -99,7 +101,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         console.log("EmployeeController.updateEmployee");
 
         var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.updateEmployeeSuccess, this.updateEmployeeFailure, this);
-        var service = this.getEmployeeService();
+        var service = this.employeeService;
+//        var service = this.getEmployeeService();
 
         service.setResponder(responder);
         service.updateEmployee(employee);
@@ -114,7 +117,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
         console.log("EmployeeController.deleteEmployee");
 
         var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.deleteEmployeeSuccess, this.deleteEmployeeFailure, this);
-        var service = this.getEmployeeService();
+        var service = this.employeeService;
+//        var service = this.getEmployeeService();
 
         service.setResponder(responder);
         service.deleteEmployee(employee);
@@ -133,7 +137,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     getEmployeeListSuccess: function(response) {
         console.log("EmployeeController.getEmployeeListSuccess");
 
-        var store = this.getEmployeeStore();
+        // var store = this.getEmployeeStore();
+        var store = this.employeeStore;
         store.setData(response.employeeList);
 
         var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.GET_EMPLOYEE_LIST_SUCCESS);
@@ -162,8 +167,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     createEmployeeSuccess: function(response) {
         console.log("EmployeeController.createEmployeeSuccess");
 
-        var store = this.getEmployeeStore();
-
+        // var store = this.getEmployeeStore();
+        var store = this.employeeStore;
         store.add(response.employee);
 
         var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.CREATE_EMPLOYEE_SUCCESS);
@@ -192,7 +197,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     updateEmployeeSuccess: function(response) {
         console.log("EmployeeController.updateEmployeeSuccess");
 
-        var store = this.getEmployeeStore();
+        // var store = this.getEmployeeStore();
+        var store = this.employeeStore;
         store.update(response.employee);
 
         var evt = new CafeTownsend.event.EmployeeEvent(CafeTownsend.event.EmployeeEvent.UPDATE_EMPLOYEE_SUCCESS);
@@ -221,7 +227,8 @@ Ext.define("CafeTownsend.controller.EmployeeController", {
     deleteEmployeeSuccess: function(response) {
         console.log("EmployeeController.deleteEmployeeSuccess");
 
-        var store = this.getEmployeeStore();
+        // var store = this.getEmployeeStore();
+        var store = this.employeeStore;
         var employee = store.findRecord("id", response.employee.id);
 
         store.remove(employee);

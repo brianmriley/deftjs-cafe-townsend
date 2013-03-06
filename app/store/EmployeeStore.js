@@ -21,7 +21,7 @@
 Ext.define("CafeTownsend.store.EmployeeStore", {
     extend: "SenchaExtensions.mvc.store.AbstractStore",
 
-    config: {
+//    config: {
         model: "CafeTownsend.model.EmployeeModel",
 
         sorters: "lastName",
@@ -37,5 +37,5 @@ Ext.define("CafeTownsend.store.EmployeeStore", {
                 }
             }
         }
-    }
+//    }
 });

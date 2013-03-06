@@ -26,6 +26,7 @@
 Ext.define("CafeTownsend.view.LoginView", {
     extend: "Ext.form.Panel",
     alias: "widget.loginView",
+//    controller: "CafeTownsend.mediator.LoginMediator",
 
     requires: [
         "Ext.form.FieldSet",

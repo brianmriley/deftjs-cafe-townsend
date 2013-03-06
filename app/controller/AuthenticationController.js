@@ -33,18 +33,21 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
         "authenticationServiceClass"
     ],
 
+    // NOTE: creating config placeholder properties for the injected service doesn't seem to work
+    // however, just putting them in the inject property seems to do the trick you just need to access
+    // them without the getter
     config: {
         /**
          * @cfg {Object} authenticationService The injected authentication service from DeftJS.
          * @accessor
          */
-        authenticationService: null,
+//        authenticationService: null,
 
         /**
          * @cfg {Object} employeeStore The injected employee store from DeftJS.
          * @accessor
          */
-        employeeStore: null
+//        employeeStore: null
     },
 
     /**
@@ -72,12 +75,15 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
         // NOTE: You can set up the service call either using the longhand way where you need to know about the
         // use of the Responder object or you can use the framework method that does this behind the scenes: executeServiceCall()
 //        var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.loginSuccess, this.loginFailure, this);
-//        var service = this.getAuthenticationService();
+//        var service = this.authenticationService;
 //
 //        service.setResponder(responder);
 //        service.authenticate(username, password);
 
-        var service = this.getAuthenticationService();
+        var aaa = this.getService(this.authenticationServiceClass);
+
+        var service = this.authenticationService;
+//        var service = this.getAuthenticationService();
         this.executeServiceCall(service, service.authenticate, [username, password], this.loginSuccess, this.loginFailure, this);
     },
 
@@ -90,7 +96,7 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
         console.log("AuthenticationController.logout");
 
         var responder = new SenchaExtensions.mvc.service.rpc.Responder(this.logoutSuccess, this.logoutFailure, this);
-        var service = this.getAuthenticationService();
+        var service = this.authenticationService;
 
         service.setResponder(responder);
         service.logout();
@@ -103,7 +109,8 @@ Ext.define("CafeTownsend.controller.AuthenticationController", {
         console.info("AuthenticationController.resetSessionData");
 
         this.setSessionToken(null);
-        this.getEmployeeStore().setData(null);
+//        this.getEmployeeStore().setData(null);
+        this.employeeStore.setData(null);
     },
 
     ////////////////////////////////////////////////
