@@ -24,7 +24,7 @@
  * TODO: BMR: 02/22/13: Don't add all the views to the stage at once. Do it on demand.
  */
 Ext.define("CafeTownsend.mediator.touch.ViewportMediator", {
-    extend: "SenchaExtensions.mvc.mediator.AbstractMediator",
+    extend: "CafeTownsend.mediator.AbstractMediator",
 
     requires: [
         "CafeTownsend.event.AuthenticationEvent",

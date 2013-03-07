@@ -22,10 +22,9 @@
  * different; eg, a login button on a desktop app could be click whereas mobile could be tap.
  */
 Ext.define("CafeTownsend.mediator.touch.LoginMediator", {
-    extend: "SenchaExtensions.mvc.mediator.AbstractMediator",
+    extend: "CafeTownsend.mediator.AbstractMediator",
 
     requires: [
-        "CafeTownsend.view.LoginView",
         "CafeTownsend.event.AuthenticationEvent"
     ],
 

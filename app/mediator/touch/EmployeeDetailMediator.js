@@ -19,7 +19,7 @@
  * The employee list mediator essentially fulfills the passive view pattern for the employee list view.
  */
 Ext.define("CafeTownsend.mediator.touch.EmployeeDetailMediator", {
-    extend: "SenchaExtensions.mvc.mediator.AbstractMediator",
+    extend: "CafeTownsend.mediator.AbstractMediator",
 
     requires: [
         "CafeTownsend.event.EmployeeEvent",
