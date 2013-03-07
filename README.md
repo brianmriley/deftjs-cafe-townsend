@@ -7,6 +7,7 @@ CafeTownsend is a well known application created to demonstrate various MVC fram
 There are known ports using Cairngorm, Mate, PureMVC, Spring ActionScript, RobotLegs and Swiz.
 This implementation uses Sencha Touch, DeftJS, and the WASI Sencha MVC Extensions:
 
+*  [Sencha ExtJS](http://www.sencha.com/products/extjs) - Robust HTML5/JavaScript Framework for Desktop Applications
 *  [Sencha Touch](http://www.sencha.com/products/touch) - Robust HTML5/JavaScript Framework for Mobile Applications
 *  [DeftJS](https://github.com/deftjs/) - DeftJS enhances Sencha's ExtJS and Sencha Touch APIs with additional
 building blocks that enable large development teams to rapidly create enterprise-scale applications, leveraging best
@@ -33,6 +34,10 @@ Second, with a strong desire to create applications for both the desktop and mob
 an application with as much reusability and portability in mind as possible; how do we decrease the amount of unique code
 we need to write for both form factors and simply reuse the application and business logic?
 
+This example application reuses application and business objects (Events, Controllers, Services, Models, and Stores) in
+both the ExtJS and Touch versions leaving only the unique coding of the Views and Mediators (which should be form factor
+specific in UX and componentry).
+
 # Goals 
 
 This port demonstrates the following:
@@ -42,7 +47,7 @@ This port demonstrates the following:
 *  Separation-of-concerns for Model-View-Controller-Service
 *  Services as mocks and real HTTP data services
 *  Rigorous elimination of logic from View code using Mediators
-*  Session Management/Authentication
+*  Extensive reuse and portability of application and business objects by the ExtJS and Touch verrsions
 *  Lazy loading of data services (*with auto-jsonify of external JSON data*)
 *  Code versions handwritten in Javascript with extensive class and method level comments
 
@@ -163,26 +168,36 @@ and destroyed by controllers and used by mediators to marshall data for their re
 
 # Directory Layout
 
-    index.html              --> contains the bootstrapping and basic styling for the entire app
-    app.js                  --> the main application setup and creation
+    index-extjs-dev.html    --> contains linkages for ExtJS framework, styling, application classes
+    index-touch-dev.html    --> contains linkages for Touch framework, styling, application classes
+
+    app-extjs.js            --> the main application setup and creation for the desktop, ExtJS version
+    app-touch.js            --> the main application setup and creation for the mobile, Touch version
 
     app/                    --> contains sencha mvc infrastructure
 
         controller/         --> application, service controllers
         event/              --> application-level events used with event bus
         mediator/           --> view mediators that fulfil the passive view pattern
+            extjs/          --> mediators specific to ExtJS
+            touch/          --> mediators specific to Touch
         model/              --> domain models
         service/            --> concrete data service implementations
             mock/           --> mock data services
         store/              --> data stores containing lists of models
         view/               --> ui views or screens for the application
+            extjs/          --> views specific to ExtJS
+            touch/          --> views specific to Touch
 
 
     lib/                    --> contains all 3rd party libraries
-        deft-08.8/          --> the current deftjs library
+        deft-08.8/          --> the current [DeftJS](https://github.com/deftjs/) library
+        ext-4.1.1a/         --> the current [Sencha ExtJS](http://www.sencha.com/products/extjs) library
+        jasmine-1.3.1/      --> the current [Jasmine](http://pivotal.github.com/jasmine/) unit testing library
         wasi-sencha-ext/    --> wasi sencha mvc extensions
 
     data/                   --> contains json data for mocking service calls
+    test/                   --> contains all unit tests (NOTE: in progress)
 
 ## Pending Features
 
@@ -196,3 +211,5 @@ This effort is still ongoing with some in-progress effort that will provide the 
 *  Localization - CafeTownsend
 *  Unit Tests - CafeTownsend
 *  Build Support - CafeTownsend
+*  Generate documentation with JSDuck
+*  Inject logger and use something other than console.log() which bombs in browsers like IE6
