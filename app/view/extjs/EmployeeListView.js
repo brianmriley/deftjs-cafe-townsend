@@ -26,10 +26,72 @@
  *  TODO: BMR: 02/22/13: Add support for search. The search input isn't currently in the view.
  */
 Ext.define("CafeTownsend.view.extjs.EmployeeListView", {
-    extend: "Ext.panel.Panel",
+    extend: "Ext.Panel",
     alias: "widget.extjsEmployeeListView",
 
+    requires: [
+        'Ext.data.*',
+        'Ext.util.*',
+        'Ext.view.View',
+//        'Ext.ux.DataView.DragSelector',
+//        'Ext.ux.DataView.LabelEditor'
+    ],
+
     title: "Employees",
+
+    items: Ext.create('Ext.view.View', {
+//        store: store,
+        tpl: [
+            '<tpl for=".">',
+            '<div class="thumb-wrap" id="{name}">',
+            '<div class="thumb"><img src="{url}" title="{name}"></div>',
+            '<span class="x-editable">{shortName}</span></div>',
+            '</tpl>',
+            '<div class="x-clear"></div>'
+        ],
+        multiSelect: true,
+        height: 310,
+        trackOver: true,
+        overItemCls: 'x-item-over',
+        itemSelector: 'div.thumb-wrap',
+        emptyText: 'No images to display',
+//        plugins: [
+//            Ext.create('Ext.ux.DataView.DragSelector', {}),
+//            Ext.create('Ext.ux.DataView.LabelEditor', {dataIndex: 'name'})
+//        ],
+        prepareData: function(data) {
+            Ext.apply(data, {
+                shortName: Ext.util.Format.ellipsis(data.name, 15),
+                sizeString: Ext.util.Format.fileSize(data.size),
+                dateString: Ext.util.Format.date(data.lastmod, "m/d/Y g:i a")
+            });
+            return data;
+        },
+        listeners: {
+            selectionchange: function(dv, nodes ){
+                var l = nodes.length,
+                    s = l !== 1 ? 's' : '';
+                this.up('panel').setTitle('Simple DataView (' + l + ' item' + s + ' selected)');
+            }
+        }
+    }),
+
+//    itemId: "list",
+//    fullscreen: true,
+//    itemTpl: "<div class='contact'>{firstName} <strong>{lastName}</strong></div>",
+//    loadingText: "Loading Employees...",
+//    emptyText: "No Employees found.",
+//    grouped: true,
+//    onItemDisclosure: true,
+//
+//    columns: [
+//        { text: 'Name',  dataIndex: 'name' }
+//    ],
+
+
+
+
+
 
     frame: true,
     bodyPadding: "5px 5px 0",
@@ -46,27 +108,27 @@ Ext.define("CafeTownsend.view.extjs.EmployeeListView", {
 //    },
 //    defaultType: "textfield",
 
-    items: [
+//    items: [
 //        {
 //            xtype: "panel",
 //            name: "usernameTextField",
 //            id: "usernameTextField",
 //            inputType: "text"
 //        },
-        {
-            xtype: "grid",
-            title: "Employees",
-            itemId: "list",
-            fullscreen: true,
-            itemTpl: "<div class='contact'>{firstName} <strong>{lastName}</strong></div>",
-            loadingText: "Loading Employees...",
-            emptyText: "No Employees found.",
-            grouped: true,
-            onItemDisclosure: true,
-
-            columns: [
-                { text: 'Name',  dataIndex: 'name' }
-            ]
+//        {
+//            xtype: "grid",
+//            title: "Employees",
+//            itemId: "list",
+//            fullscreen: true,
+//            itemTpl: "<div class='contact'>{firstName} <strong>{lastName}</strong></div>",
+//            loadingText: "Loading Employees...",
+//            emptyText: "No Employees found.",
+//            grouped: true,
+//            onItemDisclosure: true,
+//
+//            columns: [
+//                { text: 'Name',  dataIndex: 'name' }
+//            ]
 
 //            items: [
 //                {
@@ -84,8 +146,8 @@ Ext.define("CafeTownsend.view.extjs.EmployeeListView", {
 //                    ]
 //                }
 //            ]
-        }
-    ]
+//        }
+//    ]
 
 //    requires: [
 //        "Ext.TitleBar",

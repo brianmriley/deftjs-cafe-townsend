@@ -21,81 +21,35 @@
  * It is expected that different form factors may require a new mediator implementation as the events could be
  * different; eg, a login button on a desktop app could be click whereas mobile could be tap.
  */
-Ext.define("CafeTownsend.mediator.extjs.LoginMediator", {
+Ext.define("CafeTownsend.mediator.touch.LoginMediator", {
     extend: "SenchaExtensions.mvc.mediator.AbstractMediator",
 
     requires: [
-        "CafeTownsend.view.extjs.LoginView",
+        "CafeTownsend.view.LoginView",
         "CafeTownsend.event.AuthenticationEvent"
     ],
 
-    // NOTE: Refs do not work when setting up event handlers in the control, but do create getters/setters so they
-    // can be used to reference view sub-components in areas other than control
-    refs: [
-        {
-            ref:        "loginView",
-            selector:   "extjsLoginView"
-        },
-        {
-            ref:        "logInButton",
-            selector:   "extjsLoginView button[action=login]"
-        },
-        {
-            ref:        "loginForm",
-            selector:   "extjsLoginView.form"
-        },
-        {
-            selector:   "extjsLoginView textfield[name=usernameTextField]",
-            ref:        "usernameTextField"
-        },
-        {
-            selector:   "extjsLoginView textfield[name=passwordTextField]",
-            ref:        "passwordTextField"
-        }
-    ],
+    config: {
 
-    // NOTE: this type of configuration only works in Sencha Touch 2.x
-//    config: {
-//
-//        // create references to this mediator's views so we can listen to events and grab data from them
-//        refs: {
-//            loginView:              "loginView",
-//            logInButton:            "loginView #logInButton",
-//            usernameTextField:      "loginView #usernameTextField",
-//            passwordTextField:      "loginView #passwordTextField"
-//        },
-//
+        // create references to this mediator's views so we can listen to events and grab data from them
+        refs: {
+            loginView:              "touchLoginView",
+            logInButton:            "touchLoginView #logInButton",
+            usernameTextField:      "touchLoginView #usernameTextField",
+            passwordTextField:      "touchLoginView #passwordTextField"
+        },
+
         // set up view event to mediator mapping
-//        control: {
-//            logInButton: {
-//                tap: "onLoginButtonClick"
-//            }
-//        }
-//    },
-
-    // NOTE: Using the control object in the object config in ExtJS does not work like it does in Touch 2.x
-//    control: {
-//        "extjsLoginView button[action=login]": {
-//            click: this.onLoginButtonClick
-//        }
-//        logInButton: {
-//            click: this.onLoginButtonClick
-//        }
-//    },
+        control: {
+            logInButton: {
+                tap: "onLoginButtonTap"
+            }
+        }
+    },
 
     ////////////////////////////////////////////////
     // FUNCTIONAL METHODS
     ////////////////////////////////////////////////
-
-    /**
-     * Sets up view component event handlers.
-     */
-    init: function() {
-        this.callParent(arguments);
-        console.log("LoginMediator.init");
-
-        this.addEventListenerBySelector("extjsLoginView button[action=login]", "click", this.onLoginButtonClick);
-    },
 
     /**
      * Sets up global event bus handlers. Called by the parent superclass during the initialization phase.
@@ -122,12 +76,10 @@ Ext.define("CafeTownsend.mediator.extjs.LoginMediator", {
 
         this.reset();
 
-        // TODO: wrap masking
-        view.mask({
+        view.setMasked({
             xtype: "loadmask",
             message: "Signing In..."
         });
-//        view.mask("Signing In...");
 
         var evt = new CafeTownsend.event.AuthenticationEvent(CafeTownsend.event.AuthenticationEvent.LOGIN, username, password);
         this.dispatchGlobalEvent(evt);
@@ -142,7 +94,7 @@ Ext.define("CafeTownsend.mediator.extjs.LoginMediator", {
         console.log("LoginMediator.showSignInFailedMessage: " + message);
 
         var label = this.getComponentById("signInFailedLabel", this.getLoginView());
-        label.setText(message);
+        label.setHtml(message);
         label.show();
     },
 
@@ -176,7 +128,7 @@ Ext.define("CafeTownsend.mediator.extjs.LoginMediator", {
         console.log("LoginMediator.onLoginSuccess");
 
         var view = this.getLoginView();
-        view.unmask();
+        view.setMasked(false);
     },
 
     /**
@@ -187,7 +139,7 @@ Ext.define("CafeTownsend.mediator.extjs.LoginMediator", {
         console.log("LoginMediator.onLoginSuccess");
 
         var view = this.getLoginView();
-        view.unmask();
+        view.setMasked(false);
 
         this.navigate(CafeTownsend.event.AuthenticationEvent.LOGOUT_SUCCESS);
     },
@@ -200,7 +152,7 @@ Ext.define("CafeTownsend.mediator.extjs.LoginMediator", {
         console.log("LoginMediator.onLoginFailure");
 
         var view = this.getLoginView();
-        view.unmask();
+        view.setMasked(false);
 
         this.showSignInFailedMessage("Login failed. Incorrect username or password.");
     },
@@ -215,8 +167,8 @@ Ext.define("CafeTownsend.mediator.extjs.LoginMediator", {
      *
      * @param event The tap event from the login button on the login view.
      */
-    onLoginButtonClick: function(event) {
-        console.log("LoginMediator.onLoginButtonClick");
+    onLoginButtonTap: function(event) {
+        console.log("LoginMediator.onLoginButtonTap");
 
         var username = this.getUsernameTextField().getValue();
         var password = this.getPasswordTextField().getValue();
@@ -232,7 +184,7 @@ Ext.define("CafeTownsend.mediator.extjs.LoginMediator", {
         // time to finish before executing the next steps.
         var task = Ext.create("Ext.util.DelayedTask", function() {
 
-            label.setText("");
+            label.setHtml("");
 
             if(me.areLoginCredentialsValid(username, password)) {
                 me.login(username, password);
